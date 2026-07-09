@@ -1,0 +1,370 @@
+/* ============================================================
+   Mehmet Akif Sahin — stylesheet
+   Theme colors live in the :root variables below — change them
+   in one place to re-skin the whole site.
+   ============================================================ */
+
+:root {
+  --bg: #ffffff;
+  --surface: #f7f7f5;
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --border: #e6e6e2;
+  --accent: #3054d1;
+  --accent-soft: rgba(48, 84, 209, 0.1);
+  --max-width: 720px;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-head: Georgia, "Iowan Old Style", "Times New Roman", serif;
+}
+
+:root[data-theme="dark"] {
+  --bg: #14151a;
+  --surface: #1c1e26;
+  --text: #e9e9ec;
+  --muted: #9a9aa5;
+  --border: #2a2c36;
+  --accent: #7d9bff;
+  --accent-soft: rgba(125, 155, 255, 0.14);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14151a;
+    --surface: #1c1e26;
+    --text: #e9e9ec;
+    --muted: #9a9aa5;
+    --border: #2a2c36;
+    --accent: #7d9bff;
+    --accent-soft: rgba(125, 155, 255, 0.14);
+  }
+}
+
+* { box-sizing: border-box; }
+
+/* Ensure the HTML `hidden` attribute always wins, even over display:grid etc. */
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%; /* stop iOS from auto-inflating text */
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden; /* safety net against accidental horizontal scroll */
+  overflow-wrap: break-word; /* long URLs/words wrap instead of overflowing */
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+.muted { color: var(--muted); }
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav__brand {
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.nav__links {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+}
+.nav__links a {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.nav__links a:hover { color: var(--text); text-decoration: none; }
+
+.theme-toggle {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+/* ---------- Intro ---------- */
+.intro {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  padding: 56px 0 32px;
+}
+
+.avatar {
+  width: 184px;
+  height: 184px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+  object-position: 50% 20%; /* bias the crop toward the face for tall portraits */
+  border: 1px solid var(--border);
+}
+
+.avatar--placeholder {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-head);
+  font-size: 3.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  letter-spacing: 0.03em;
+}
+
+.intro__text { min-width: 0; }
+
+.intro h1 {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 5.5vw, 2.3rem); /* scales smoothly across phone → desktop */
+  line-height: 1.1;
+  margin: 0 0 6px;
+}
+
+.intro__role { margin: 0; font-size: 1.05rem; }
+.intro__affil { margin: 2px 0 14px; font-size: 0.98rem; }
+.intro__blurb { margin: 0 0 18px; }
+
+/* ---------- Link row ---------- */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+.links a {
+  font-size: 0.92rem;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.links a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ---------- Sections ---------- */
+.section {
+  padding: 34px 0;
+  border-top: 1px solid var(--border);
+}
+
+.section h2 {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  margin: 0 0 16px;
+}
+
+.section__hint { margin-top: -6px; font-size: 0.95rem; }
+
+.interests {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+}
+.interests li {
+  position: relative;
+  padding-left: 20px;
+}
+.interests li::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ---------- Experience / Education entries ---------- */
+.entry {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+}
+.entry:last-child { border-bottom: 0; }
+.entry__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 14px;
+  align-items: baseline;
+}
+.entry__role { font-weight: 600; }
+.entry__date {
+  color: var(--muted);
+  font-size: 0.88rem;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.entry__org {
+  color: var(--accent);
+  font-size: 0.95rem;
+  margin: 2px 0 0;
+}
+.entry__desc { margin: 6px 0 0; font-size: 0.96rem; }
+
+/* Job-progression timeline (multiple roles at one employer) */
+.progression {
+  list-style: none;
+  margin: 12px 0 4px;
+  padding: 0;
+}
+.progression li {
+  position: relative;
+  padding: 0 0 14px 22px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2px 12px;
+}
+.progression li:last-child { padding-bottom: 0; }
+.progression li::before {          /* connector line down to the previous role */
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 16px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--border);
+}
+.progression li:last-child::before { display: none; }
+.progression li::after {           /* node dot */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  box-sizing: border-box;
+}
+.progression li:first-child::after { background: var(--accent); } /* current role filled */
+/* Company name reads as a header above its role steps */
+.entry--progression > .entry__head .entry__role {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.progression__role { font-weight: 600; }
+.progression__date {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Awards ---------- */
+.awards { margin: 0; padding: 0 0 0 20px; }
+.awards li { margin-bottom: 8px; }
+.awards li:last-child { margin-bottom: 0; }
+
+/* ---------- Publications ---------- */
+.pubs { margin: 0; padding: 0; list-style: none; counter-reset: pub; }
+.pub {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.pub:last-child { border-bottom: 0; }
+.pub__title { margin: 0 0 3px; font-weight: 600; }
+.pub__authors { margin: 0 0 2px; font-size: 0.95rem; }
+.pub__venue { margin: 0 0 6px; font-size: 0.95rem; color: var(--muted); }
+.pub__award {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 9px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #8a6a12;
+  background: rgba(214, 173, 78, 0.18);
+  border: 1px solid rgba(214, 173, 78, 0.5);
+  border-radius: 999px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+:root[data-theme="dark"] .pub__award { color: #f0d287; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pub__award { color: #f0d287; }
+}
+.pub__links { margin: 0; font-size: 0.88rem; }
+.pub__links a { color: var(--accent); }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  padding: 40px 24px 56px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .container, .nav { padding-left: 18px; padding-right: 18px; }
+  .nav__links { display: none; }
+  .theme-toggle { margin-left: auto; } /* keep toggle at the right once links are hidden */
+  .intro {
+    flex-direction: column;
+    text-align: center;
+    gap: 18px;
+    padding-top: 36px;
+  }
+  .links { justify-content: center; }
+  .interests { grid-template-columns: 1fr; }
+  .entry__head { gap: 2px 12px; }
+}
+
+/* ---------- Print (for "Save as PDF") ---------- */
+@media print {
+  .site-header, .theme-toggle, .site-footer { display: none; }
+  body { font-size: 12px; color: #000; background: #fff; }
+  a { color: #000; text-decoration: underline; }
+}

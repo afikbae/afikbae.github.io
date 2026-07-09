@@ -1,1 +1,263 @@
-Hello World
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mehmet Akif Şahin</title>
+<meta name="description" content="Mehmet Akif Şahin — Computer Science student and researcher at Bilkent University working on computer graphics, character animation, and data-driven inverse kinematics." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔬</text></svg>" />
+<link rel="stylesheet" href="styles.css" />
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="nav__brand" href="#top">M. A. Şahin</a>
+    <div class="nav__links">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+      <span aria-hidden="true">☾</span>
+    </button>
+  </nav>
+</header>
+
+<main id="top" class="container">
+
+  <!-- ============ INTRO / HERO ============ -->
+  <section class="intro">
+    <!-- Photo lives in this folder as "profile.jpg". If it's missing, the
+         "MA" initials show automatically as a fallback (handled in the script). -->
+    <img id="avatar-img" class="avatar" src="profile.jpg" alt="Mehmet Akif Şahin" />
+    <div id="avatar-fallback" class="avatar avatar--placeholder" aria-hidden="true" hidden>MA</div>
+
+    <div class="intro__text">
+      <h1>Mehmet Akif Şahin</h1>
+      <p class="intro__role">Computer Graphics Researcher</p>
+      <p class="intro__affil muted">Bilkent University · Ankara, Turkey</p>
+
+      <p class="intro__blurb">
+        Computer Science researcher in <strong>computer graphics</strong> and
+        <strong>human–computer interaction</strong>. I work on character animation, motion
+        synthesis, and virtual reality — building data-driven tools that make virtual humans
+        move and behave more naturally.
+      </p>
+
+      <div class="links">
+        <a href="mailto:mehmetakifika@outlook.com">Email</a>
+        <a href="https://www.linkedin.com/in/akif123/" rel="me" target="_blank">LinkedIn</a>
+        <a href="https://github.com/afikbae" rel="me" target="_blank">GitHub</a>
+        <a href="https://orcid.org/0000-0002-5876-7787" rel="me" target="_blank">ORCID</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="section">
+    <h2>About</h2>
+    <p>
+      I earned my B.S. in Computer Science from <strong>Bilkent University</strong>
+      (June 2026, <strong>summa cum laude</strong>). My interests span
+      <strong>character animation</strong>, motion synthesis, human–computer interaction, and
+      virtual reality — with a focus on data-driven methods for making virtual humans move and
+      behave naturally.
+    </p>
+  </section>
+
+  <!-- ============ RESEARCH INTERESTS ============ -->
+  <section id="research" class="section">
+    <h2>Research Interests</h2>
+    <ul class="interests">
+      <li>Computer Graphics</li>
+      <li>Data-Driven Inverse Kinematics</li>
+      <li>Character Animation &amp; Motion Synthesis</li>
+      <li>Human–Computer Interaction</li>
+      <li>Virtual Reality</li>
+      <li>Automated Software Engineering</li>
+    </ul>
+  </section>
+
+  <!-- ============ PUBLICATIONS ============ -->
+  <section id="publications" class="section">
+    <h2>Publications</h2>
+
+    <ol class="pubs">
+      <li class="pub">
+        <p class="pub__title">Data-driven Inverse Kinematics using Laban Movement Analysis</p>
+        <p class="pub__authors"><strong>Mehmet Akif Şahin</strong>, Sinan Sonlu, Uğur Güdükbay</p>
+        <p class="pub__venue"><em>Computers &amp; Graphics</em>, vol.&nbsp;138 (Proc. SMI 2026)<span class="pub__award">🏆 Honorable Mention</span></p>
+        <p class="pub__links">
+          <a href="https://www.sciencedirect.com/science/article/pii/S0097849326001147" target="_blank">Paper</a> ·
+          <a href="https://doi.org/10.1016/j.cag.2026.104643" target="_blank">DOI</a> ·
+          <a href="https://drive.google.com/file/d/1wIR-kwGkXql3ohLmQUxqoZvk_noW3j6f/view?usp=sharing" target="_blank">Honorable Mention</a> ·
+          <a href="https://smiconf.github.io/2026/" target="_blank">SMI 2026</a>
+          <!-- EDIT: presentation video coming later — add:  · <a href="VIDEO_URL" target="_blank">Video</a> -->
+        </p>
+      </li>
+
+      <li class="pub">
+        <p class="pub__title">Generalization of Multi-Dimensional Polygonal Numbers</p>
+        <p class="pub__authors"><strong>Mehmet Akif Şahin</strong>, Berkay Semiz, Esra İnan</p>
+        <p class="pub__venue"><em>Caucasian Journal of Science</em>, vol.&nbsp;9, no.&nbsp;2, pp.&nbsp;75–94, 2022</p>
+        <p class="pub__links"><a href="https://doi.org/10.48138/cjo.895375" target="_blank">Article</a></p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience" class="section">
+    <h2>Experience</h2>
+
+    <div class="entry entry--progression">
+      <div class="entry__head">
+        <span class="entry__role">Sebiza Technology</span>
+      </div>
+      <div class="entry__org">Ankara, Turkey</div>
+      <ul class="progression">
+        <li>
+          <span class="progression__role">Researcher</span>
+          <span class="progression__date">Jun 2026 – Present</span>
+        </li>
+        <li>
+          <span class="progression__role">Software Developer</span>
+          <span class="progression__date">Jul 2025 – Jun 2026</span>
+        </li>
+      </ul>
+      <p class="entry__desc">
+        Lead a team of four engineers building Riskoloji, a large-scale seismic risk-assessment
+        platform; architect distributed sensor systems and scalable, high-availability data
+        pipelines for processing massive real-time sensor data.
+      </p>
+    </div>
+
+    <div class="entry">
+      <div class="entry__head">
+        <span class="entry__role">Undergraduate Researcher</span>
+        <span class="entry__date">Feb 2024 – Jun 2026</span>
+      </div>
+      <div class="entry__org">Bilkent University · Ankara, Turkey</div>
+      <p class="entry__desc">
+        Developed data-driven solutions to human-body inverse kinematics problems using Laban
+        Movement Analysis, supervised by Prof. Uğur Güdükbay. The work culminated in a paper
+        published in <em>Computers &amp; Graphics</em> and presented at SMI 2026, where it
+        received an Honorable Mention.
+      </p>
+    </div>
+
+    <div class="entry">
+      <div class="entry__head">
+        <span class="entry__role">Research Intern</span>
+        <span class="entry__date">Jun – Aug 2025</span>
+      </div>
+      <div class="entry__org">Inria — VIRTUS team · Rennes, France</div>
+      <p class="entry__desc">
+        Designed and implemented an immersive VR experiment in Unity investigating expressive
+        conversational virtual agents. Ran a user study on how agent personality traits shape
+        user engagement and learning. Mentored by Dr. Katja Zibrek.
+      </p>
+    </div>
+
+    <div class="entry">
+      <div class="entry__head">
+        <span class="entry__role">Software Engineer Intern</span>
+        <span class="entry__date">Jul 2024</span>
+      </div>
+      <div class="entry__org">MobileAction · Ankara, Turkey</div>
+      <p class="entry__desc">
+        Built modular backend services with Spring Boot, Java, and RabbitMQ, and web interfaces
+        with Vue.js and TailwindCSS.
+      </p>
+    </div>
+
+    <div class="entry">
+      <div class="entry__head">
+        <span class="entry__role">Backend Developer Intern</span>
+        <span class="entry__date">May – Sep 2023</span>
+      </div>
+      <div class="entry__org">Monkedo · Remote</div>
+      <p class="entry__desc">
+        Built reusable API-integration components in TypeScript, making third-party APIs
+        accessible to non-technical users.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ EDUCATION ============ -->
+  <section id="education" class="section">
+    <h2>Education</h2>
+
+    <div class="entry">
+      <div class="entry__head">
+        <span class="entry__role">B.S. in Computer Science</span>
+        <span class="entry__date">Sep 2022 – Jun 2026</span>
+      </div>
+      <div class="entry__org">Bilkent University · Ankara, Turkey</div>
+      <p class="entry__desc">
+        Graduated <strong>summa cum laude</strong> with a CGPA of 3.92 / 4.00, ranked 4th in
+        cohort. Admitted on a full (100%) merit scholarship after ranking 266th nationally in
+        the university entrance exam (YKS) among 3M+ candidates.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ HONORS & AWARDS ============ -->
+  <section id="awards" class="section">
+    <h2>Honors &amp; Awards</h2>
+    <ul class="awards">
+      <li><strong>Summa Cum Laude</strong> — Bilkent University (CGPA 3.92 / 4.00, 4th in cohort).</li>
+      <li><strong>High Honor Student</strong> — all 8 semesters at Bilkent University.</li>
+      <li><strong>inzva Algorithm Competition, Winter Camp 2024</strong> — 2nd place; selected as 1 of 50 from 222 students nationwide.</li>
+      <li><strong>inzva Algorithm Competition, Summer Camp 2024</strong> — advanced level; selected as 1 of 50 from 121 students nationwide.</li>
+      <li><strong>TÜBİTAK 2204 Research Competition</strong> — Regional 1st place (2020) and 2nd place (2021).</li>
+    </ul>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="section">
+    <h2>Contact</h2>
+    <p>
+      The best way to reach me is by email:
+      <a href="mailto:mehmetakifika@outlook.com">mehmetakifika@outlook.com</a>.
+      You can also find me on
+      <a href="https://www.linkedin.com/in/akif123/" target="_blank">LinkedIn</a>.
+    </p>
+    <p class="muted">Ankara, Turkey</p>
+  </section>
+
+</main>
+
+<footer class="site-footer container">
+  <p>© <span id="year">2026</span> Mehmet Akif Şahin.</p>
+</footer>
+
+<script>
+  // Footer year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Show initials fallback if the photo is missing
+  (function () {
+    var img = document.getElementById("avatar-img");
+    if (!img) return;
+    img.addEventListener("error", function () {
+      img.hidden = true;
+      var fb = document.getElementById("avatar-fallback");
+      if (fb) fb.hidden = false;
+    });
+  })();
+
+  // Theme toggle (remembers your choice)
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById("theme-toggle");
+    var saved = localStorage.getItem("theme");
+    if (saved) root.setAttribute("data-theme", saved);
+    btn.addEventListener("click", function () {
+      var current = root.getAttribute("data-theme");
+      var isDark =
+        current === "dark" ||
+        (!current && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      var next = isDark ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+    });
+  })();
+</script>
