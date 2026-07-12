@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Computational geometry and buildings</title>
+  <rect width="64" height="64" rx="14" fill="#101b35"/>
+  <!-- Triangulated field: computational geometry -->
+  <g fill="none" stroke="#76d5e8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 45 18 17l13 12 10-17 15 13-7 27z" stroke-width="2.5" opacity=".9"/>
+    <path d="m8 45 23-16 18 23M18 17l5 35m18-40-10 17 25-4M31 29l-8 23" stroke-width="1.5" opacity=".68"/>
+    <circle cx="18" cy="17" r="2" fill="#76d5e8" stroke="none"/>
+    <circle cx="41" cy="12" r="2" fill="#76d5e8" stroke="none"/>
+    <circle cx="56" cy="25" r="2" fill="#76d5e8" stroke="none"/>
+  </g>
+  <!-- Architectural massing -->
+  <path d="M18 52V32l14-8v28z" fill="#f4b85a"/>
+  <path d="m32 24 14 8v20L32 52z" fill="#d98243"/>
+  <path d="m18 32 14-8 14 8-14 8z" fill="#ffe0a0"/>
+  <g fill="#101b35">
+    <path d="M22 37h5v5h-5zm0 8h5v5h-5zm9-4h5v5h-5zm9-4h3v5h-3zm0 8h3v5h-3z"/>
+  </g>
+</svg>
