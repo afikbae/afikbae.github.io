@@ -1,8 +1,22 @@
 /* Synthetic examples from the pole parameterization (#eq6) and two-mode PSD (#eq24); no measured data. */
 (() => {
   function poleModel(fn, zeta) {
-    const wn = 2 * Math.PI * fn;
-    return { alpha: zeta * wn, wd: wn * Math.sqrt(1 - zeta * zeta), wn };
+    const wn = 2 * Math.PI * fn, alpha = zeta * wn;
+    const wd = wn * Math.sqrt(Math.max(0, 1 - zeta * zeta));
+    const beta = wn * Math.sqrt(Math.max(0, zeta * zeta - 1));
+    const slow = zeta > 1 ? -wn / (zeta + Math.sqrt(zeta * zeta - 1)) : -alpha;
+    return { alpha, wd, wn, beta, slow, fast: -alpha - beta, zeta };
+  }
+  // Unit displacement released from rest, valid in all three damping regimes.
+  function freeResponse(t, model) {
+    const { alpha, wd, wn, beta, slow, fast, zeta } = model;
+    if (zeta < 1) {
+      const x = wd * t;
+      const sinc = Math.abs(x) < 1e-6 ? 1 - x*x/6 : Math.sin(x)/x;
+      return Math.exp(-alpha*t) * (Math.cos(x) + alpha*t*sinc);
+    }
+    if (zeta === 1) return (1 + wn*t)*Math.exp(-wn*t);
+    return (-fast*Math.exp(slow*t) + slow*Math.exp(fast*t))/(2*beta);
   }
   function modalWeight(f, fn, zeta) {
     const r = f / fn;
@@ -21,7 +35,7 @@
     return { s1, s2, a, b, d, theta, mac1: Math.cos(theta) ** 2,
       mac2: Math.cos(theta - beta) ** 2, degenerate: delta / (a + d) < 1e-10 };
   }
-  if (typeof module !== 'undefined') module.exports = { poleModel, modalWeight, spectrum };
+  if (typeof module !== 'undefined') module.exports = { poleModel, freeResponse, modalWeight, spectrum };
   if (typeof document === 'undefined') return;
   const el = id => document.getElementById(id);
   const value = id => Number(el(id).value);
@@ -30,30 +44,36 @@
   const curve = (points, cls) => `<path class="${cls}" d="${points.map(([x,y], i) => `${i ? 'L' : 'M'}${x.toFixed(2)},${y.toFixed(2)}`).join(' ')}"/>`;
   function drawPoles() {
     const fn = value('pole-frequency'), z = value('pole-damping') / 100;
-    const { alpha, wd } = poleModel(fn, z);
+    const model = poleModel(fn, z);
+    const { alpha, wd, wn, slow, fast } = model;
     el('pole-frequency-value').textContent = `${fn.toFixed(1)} Hz`;
     el('pole-damping-value').textContent = `${(100*z).toFixed(1)}%`;
-    const px = x => 208 + x * 24, py = y => 117 - y * 3;
-    let svg = text(20, 18, 'Pole plane (s⁻¹)') + text(290, 18, 'Free-response component');
-    svg += line(40,117,232,117) + line(208,28,208,204);
-    svg += text(43,137,'−6') + text(214,137,'0') + text(188,218,'Re(λ)');
-    svg += text(215,37,'Im(λ)');
-    for (const w of [wd, -wd]) {
-      const x = px(-alpha), y = py(w);
+    const extent = Math.max(wn, -fast) * 1.12;
+    const px = x => 224 + x * 170 / extent, py = y => 117 - y * 80 / extent;
+    let svg = text(20, 18, 'Pole plane (s⁻¹)') + text(290, 18, 'Displacement: release from rest');
+    svg += line(40,117,244,117) + line(224,28,224,204);
+    svg += text(45,137,`−${extent.toFixed(1)}`) + text(230,137,'0') + text(183,218,'Re(λ)');
+    svg += text(230,37,'Im(λ)');
+    const poles = z < 1 ? [[-alpha,wd],[-alpha,-wd]] : [[slow,0],[fast,0]];
+    for (const [re, im] of poles) {
+      const x = px(re), y = py(im);
       svg += line(x-4,y-4,x+4,y+4,'primary') + line(x-4,y+4,x+4,y-4,'primary');
     }
+    if (z === 1) svg += text(px(-wn),99,'double root','middle');
     svg += line(290,117,640,117) + line(290,35,290,199);
     for (let t=0;t<=4;t++) svg += line(290+t*87.5,40,290+t*87.5,198,'grid') + text(290+t*87.5,218,t,'middle');
     svg += text(465,234,'Time (s)','middle') + text(281,49,'1','end') + text(281,195,'−1','end');
-    const p=[], env=[];
-    for (let i=0;i<=500;i++) {
-      const t=4*i/500, x=290+350*i/500, a=Math.exp(-alpha*t);
-      p.push([x,117-74*a*Math.cos(wd*t)]); env.push([x,117-74*a]);
-    }
-    svg += curve(env,'secondary') + curve(p,'primary');
+    const points=[];
+    for (let i=0;i<=800;i++) points.push([290+350*i/800,117-74*freeResponse(4*i/800,model)]);
+    svg += curve(points,'primary');
     el('pole-chart').innerHTML = svg;
-    el('pole-readout').textContent = `λ = −${alpha.toFixed(3)} ± j${wd.toFixed(3)} s⁻¹ · Damped frequency ${(wd/(2*Math.PI)).toFixed(3)} Hz · Envelope falls to 1/e in ${(1/alpha).toFixed(2)} s. Dashed curve: exponential envelope.`;
+    el('pole-readout').textContent = z < 1
+      ? `Underdamped · λ = −${alpha.toFixed(3)} ± j${wd.toFixed(3)} s⁻¹ · Damped frequency ${(wd/(2*Math.PI)).toFixed(3)} Hz.`
+      : z === 1
+        ? `Critically damped · Double root λ = −${wn.toFixed(3)} s⁻¹ · No oscillation.`
+        : `Overdamped · Real poles λ₁ = ${slow.toFixed(3)}, λ₂ = ${fast.toFixed(3)} s⁻¹ · No oscillation. The slower decay has time constant ${(-1/slow).toFixed(2)} s.`;
   }
+
   function drawMix() {
     const gap=value('mode-gap'), angle=value('mode-angle'), z=value('mode-damping')/100, probe=value('probe');
     el('mode-gap-value').textContent=`${gap.toFixed(2)} Hz`;
