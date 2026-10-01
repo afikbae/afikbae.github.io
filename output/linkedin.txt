@@ -1,0 +1,75 @@
+LINKEDIN PROFILE COPY — generated from profile.yaml
+These are proposed values, not an audit of your live LinkedIn profile.
+After editing profile.yaml, rebuild and apply the changed sections in LinkedIn.
+
+HEADLINE
+Computer Graphics Researcher | Bilkent University
+
+EXPERIENCE
+Sebiza Technology · Ankara, Turkey
+Researcher | Jun 2026 – Present
+Conduct research on computational and signal-processing methods for structural health monitoring, focusing on statistical estimation and geometric methods for analysing sensor data.
+
+Software Developer | Jul 2025 – Jun 2026
+Built Riskoloji, a sensor-based structural health monitoring platform supporting continuous measurement, data analysis, reporting, and comparisons before and after earthquakes.
+
+
+Bilkent University · Ankara, Turkey
+Undergraduate Researcher | Feb 2024 – Jun 2026
+Developed data-driven solutions to human-body inverse kinematics problems using Laban Movement Analysis, supervised by Prof. Uğur Güdükbay. The work culminated in a paper published in Computers & Graphics and presented at SMI 2026, where it received an Honorable Mention.
+
+Inria — VIRTUS team · Rennes, France
+Research Intern | Jun – Aug 2025
+Designed and implemented an immersive VR experiment in Unity investigating expressive conversational virtual agents. Ran a user study on how agent personality traits shape user engagement and learning. Mentored by Dr. Katja Zibrek.
+
+MobileAction · Ankara, Turkey
+Software Engineer Intern | Jul 2024
+Built modular backend services with Spring Boot, Java, and RabbitMQ, and web interfaces with Vue.js and TailwindCSS.
+
+Monkedo · Remote
+Backend Developer Intern | May – Sep 2023
+Built reusable API-integration components in TypeScript, making third-party APIs accessible to non-technical users.
+
+EDUCATION
+Bilkent University
+M.S. in Computer Science | Sep 2026 – Present
+Supervisor: Prof. Uğur Güdükbay.
+
+Bilkent University
+B.S. in Computer Science | Sep 2022 – Jun 2026
+Graduated summa cum laude with a CGPA of 3.92 / 4.00, ranked 4th in cohort. Admitted on a full (100%) merit scholarship after ranking 266th nationally in the university entrance exam (YKS) among 3M+ candidates.
+
+Atakum Science and Art Center
+Mathematics programme | 2012 – 2022
+Selective institution for gifted students; early independent mathematics research, two TÜBİTAK awards and one article.
+
+Garip Zeycan Yıldırım Science High School
+High School Diploma | 2018 – 2022
+CGPA: 98.58 / 100.
+
+PUBLICATIONS
+Data-driven Inverse Kinematics using Laban Movement Analysis
+Mehmet Akif Şahin, Sinan Sonlu, Uğur Güdükbay
+Computers & Graphics, vol. 138 (Proc. SMI 2026)
+Honorable Mention
+✓ Replicability Stamp: https://www.replicabilitystamp.org/#https-github-com-bilkent-modvis-lma-ik
+Paper: https://www.sciencedirect.com/science/article/pii/S0097849326001147
+DOI: https://doi.org/10.1016/j.cag.2026.104643
+Code: https://github.com/Bilkent-ModVis/LMA-IK
+Honorable Mention: https://drive.google.com/file/d/1wIR-kwGkXql3ohLmQUxqoZvk_noW3j6f/view?usp=sharing
+SMI 2026: https://smiconf.github.io/2026/
+
+Generalization of Multi-Dimensional Polygonal Numbers
+Mehmet Akif Şahin, Berkay Semiz, Esra İnan
+Caucasian Journal of Science, vol. 9, no. 2, pp. 75–94, 2022
+Article: https://doi.org/10.48138/cjo.895375
+
+HONORS AND AWARDS
+Summa Cum Laude — Bilkent University (CGPA 3.92 / 4.00, 4th in cohort).
+High Honor Student — all 8 semesters at Bilkent University.
+inzva Algorithm Competition, Winter Camp 2024 — 2nd place; selected as 1 of 50 from 222 students nationwide.
+inzva Algorithm Competition, Summer Camp 2024 — advanced level; selected as 1 of 50 from 121 students nationwide.
+TÜBİTAK 2204 Research Competition — Regional 1st place (2020) and 2nd place (2021).
+
+WEBSITE
+https://mehmetakifsahin.com/

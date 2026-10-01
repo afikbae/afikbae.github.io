@@ -295,6 +295,7 @@ a:hover { text-decoration: underline; }
   font-weight: 700;
 }
 .progression__role { font-weight: 600; }
+.progression .entry__desc { flex-basis: 100%; }
 .progression__date {
   color: var(--muted);
   font-size: 0.88rem;

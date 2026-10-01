@@ -1,0 +1,180 @@
+%-------------------------
+% Resume in Latex
+% Author : Sourabh Bajaj
+% Website: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[pdftex]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{hidelinks}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.375in}
+\addtolength{\evensidemargin}{-0.375in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item\small{
+    \textbf{#1}{: #2 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeItemTitleless}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+
+% One employer heading followed by all roles in its progression.
+\newcommand{\resumeEmployer}[3]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      #3
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeRole}[2]{
+  \par\noindent
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \textit{\small #1} & \textit{\small #2} \\
+  \end{tabular*}\vspace{-5pt}
+}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+\begin{center}
+{\Large\textbf{Mehmet Akif Şahin}}\\[3pt]
+\small Ankara, Turkey $\cdot$ \href{mailto:mehmetakifika@outlook.com}{mehmetakifika@outlook.com}\\[3pt]
+\href{https://mehmetakifsahin.com/}{Website} $\cdot$ \href{https://www.linkedin.com/in/akif123/}{LinkedIn} $\cdot$ \href{https://github.com/afikbae}{GitHub} $\cdot$ \href{https://orcid.org/0000-0002-5876-7787}{ORCID}
+\end{center}
+\section{Education}
+\resumeSubHeadingListStart
+\resumeSubheading{Bilkent University}{Ankara, Turkey}{M.S. in Computer Science}{Sep 2026 -- Present}
+\resumeItemListStart
+\resumeItemTitleless{Supervisor: Prof. Uğur Güdükbay.}
+\resumeItemListEnd
+\resumeSubheading{Bilkent University}{Ankara, Turkey}{B.S. in Computer Science}{Sep 2022 -- Jun 2026}
+\resumeItemListStart
+\resumeItemTitleless{Graduated summa cum laude with a CGPA of 3.92 / 4.00, ranked 4th in cohort. Admitted on a full (100\%) merit scholarship after ranking 266th nationally in the university entrance exam (YKS) among 3M+ candidates.}
+\resumeItemTitleless{Received A+ grades in 12 courses: CS101, CS102, CS202, CS224, CS315, CS464, CS465, CS473, MATH102, MATH230, PHYS101 and IE400.}
+\resumeItemListEnd
+\resumeSubheading{Atakum Science and Art Center}{Samsun, Turkey}{Mathematics programme}{2012 -- 2022}
+\resumeItemListStart
+\resumeItemTitleless{Selective institution for gifted students; early independent mathematics research, two TÜBİTAK awards and one article.}
+\resumeItemListEnd
+\resumeSubheading{Garip Zeycan Yıldırım Science High School}{Samsun, Turkey}{High School Diploma}{2018 -- 2022}
+\resumeItemListStart
+\resumeItemTitleless{CGPA: 98.58 / 100.}
+\resumeItemListEnd
+\resumeSubHeadingListEnd
+\section{Publications}
+\resumeSubHeadingListStart
+\resumeItem{Data-driven Inverse Kinematics using Laban Movement Analysis}{Mehmet Akif Şahin, Sinan Sonlu, Uğur Güdükbay. Computers \& Graphics, vol. 138 (Proc. SMI 2026). Honorable Mention. \href{https://doi.org/10.1016/j.cag.2026.104643}{Article}.}
+\resumeItem{Generalization of Multi-Dimensional Polygonal Numbers}{Mehmet Akif Şahin, Berkay Semiz, Esra İnan. Caucasian Journal of Science, vol. 9, no. 2, pp. 75--94, 2022. \href{https://doi.org/10.48138/cjo.895375}{Article}.}
+\resumeSubHeadingListEnd
+\section{Research Interests}
+\resumeSubHeadingListStart
+\resumeItemTitleless{Computer Graphics, Data-Driven Inverse Kinematics, Character Animation \& Motion Synthesis, Human--Computer Interaction, Virtual Reality, Automated Software Engineering, Statistical Pattern Recognition, Structural Health Monitoring.}
+\resumeSubHeadingListEnd
+\newpage
+\section{Experience}
+\resumeSubHeadingListStart
+\resumeEmployer{Sebiza Technology}{Ankara, Turkey}{
+\textit{\small Researcher} & \textit{\small Jun 2026 -- Present} \\
+}
+\resumeItemListStart
+\resumeItemTitleless{Conduct research on computational and signal-processing methods for structural health monitoring, focusing on statistical estimation and geometric methods for analysing sensor data.}
+\resumeItemListEnd
+\resumeRole{Software Developer}{Jul 2025 -- Jun 2026}
+\resumeItemListStart
+\resumeItemTitleless{Built Riskoloji, a sensor-based structural health monitoring platform supporting continuous measurement, data analysis, reporting, and comparisons before and after earthquakes.}
+\resumeItemListEnd
+\resumeEmployer{Bilkent University}{Ankara, Turkey}{
+\textit{\small Undergraduate Researcher} & \textit{\small Feb 2024 -- Jun 2026} \\
+}
+\resumeItemListStart
+\resumeItemTitleless{Developed data-driven solutions to human-body inverse kinematics problems using Laban Movement Analysis, supervised by Prof. Uğur Güdükbay. The work culminated in a paper published in Computers \& Graphics and presented at SMI 2026, where it received an Honorable Mention.}
+\resumeItemListEnd
+\resumeEmployer{Inria --- VIRTUS team}{Rennes, France}{
+\textit{\small Research Intern} & \textit{\small Jun -- Aug 2025} \\
+}
+\resumeItemListStart
+\resumeItemTitleless{Designed and implemented an immersive VR experiment in Unity investigating expressive conversational virtual agents. Ran a user study on how agent personality traits shape user engagement and learning. Mentored by Dr. Katja Zibrek.}
+\resumeItemListEnd
+\resumeEmployer{MobileAction}{Ankara, Turkey}{
+\textit{\small Software Engineer Intern} & \textit{\small Jul 2024} \\
+}
+\resumeItemListStart
+\resumeItemTitleless{Built modular backend services with Spring Boot, Java, and RabbitMQ, and web interfaces with Vue.js and TailwindCSS.}
+\resumeItemTitleless{Developed a RESTful application using the OpenWeatherMap API to retrieve historical air pollution data; used Vite, Vue.js, Pinia and TailwindCSS.}
+\resumeItemListEnd
+\resumeEmployer{Monkedo}{Remote}{
+\textit{\small Backend Developer Intern} & \textit{\small May -- Sep 2023} \\
+}
+\resumeItemListStart
+\resumeItemTitleless{Built reusable API-integration components in TypeScript, making third-party APIs accessible to non-technical users.}
+\resumeItemListEnd
+\resumeSubHeadingListEnd
+\section{Honors / Awards}
+\resumeSubHeadingListStart
+\resumeItemTitleless{Summa Cum Laude --- Bilkent University (CGPA 3.92 / 4.00, 4th in cohort).}
+\resumeItemTitleless{High Honor Student --- all 8 semesters at Bilkent University.}
+\resumeItemTitleless{inzva Algorithm Competition, Winter Camp 2024 --- 2nd place; selected as 1 of 50 from 222 students nationwide.}
+\resumeItemTitleless{inzva Algorithm Competition, Summer Camp 2024 --- advanced level; selected as 1 of 50 from 121 students nationwide.}
+\resumeItemTitleless{TÜBİTAK 2204 Research Competition --- Regional 1st place (2020) and 2nd place (2021).}
+\resumeSubHeadingListEnd
+\end{document}

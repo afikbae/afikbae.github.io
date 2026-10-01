@@ -1,0 +1,132 @@
+# Edit professional facts here, then run python3 scripts/build-profile.py.
+# Core updates confirmed 2026-10-01; CV-only details retained from the supplied CV.
+name: Mehmet Akif Şahin
+alternate_name: Mehmet Akif Sahin
+brand: M. A. Şahin
+initials: MA
+headline: Computer Graphics Researcher
+affiliation: Bilkent University
+location: Ankara, Turkey
+email: mehmetakifika@outlook.com
+website: https://mehmetakifsahin.com/
+links:
+  LinkedIn: https://www.linkedin.com/in/akif123/
+  GitHub: https://github.com/afikbae
+  ORCID: https://orcid.org/0000-0002-5876-7787
+  Google Scholar: https://scholar.google.com/citations?user=O5pCOjUAAAAJ
+research_interests:
+- Computer Graphics
+- Data-Driven Inverse Kinematics
+- Character Animation & Motion Synthesis
+- Human–Computer Interaction
+- Virtual Reality
+- Automated Software Engineering
+- Statistical Pattern Recognition
+- Structural Health Monitoring
+publications:
+- title: Data-driven Inverse Kinematics using Laban Movement Analysis
+  authors:
+  - Mehmet Akif Şahin
+  - Sinan Sonlu
+  - Uğur Güdükbay
+  venue: Computers & Graphics, vol. 138 (Proc. SMI 2026)
+  award: Honorable Mention
+  links:
+    ✓ Replicability Stamp: https://www.replicabilitystamp.org/#https-github-com-bilkent-modvis-lma-ik
+    Paper: https://www.sciencedirect.com/science/article/pii/S0097849326001147
+    DOI: https://doi.org/10.1016/j.cag.2026.104643
+    Code: https://github.com/Bilkent-ModVis/LMA-IK
+    Honorable Mention: https://drive.google.com/file/d/1wIR-kwGkXql3ohLmQUxqoZvk_noW3j6f/view?usp=sharing
+    SMI 2026: https://smiconf.github.io/2026/
+- title: Generalization of Multi-Dimensional Polygonal Numbers
+  authors:
+  - Mehmet Akif Şahin
+  - Berkay Semiz
+  - Esra İnan
+  venue: Caucasian Journal of Science, vol. 9, no. 2, pp. 75–94, 2022
+  award: ''
+  links:
+    Article: https://doi.org/10.48138/cjo.895375
+experience:
+- organization: Sebiza Technology
+  location: Ankara, Turkey
+  roles:
+  - title: Researcher
+    dates: Jun 2026 – Present
+    description: Conduct research on computational and signal-processing methods for structural health
+      monitoring, focusing on statistical estimation and geometric methods for analysing sensor data.
+  - title: Software Developer
+    dates: Jul 2025 – Jun 2026
+    description: Built Riskoloji, a sensor-based structural health monitoring platform supporting
+      continuous measurement, data analysis, reporting, and comparisons before and after earthquakes.
+  # Product context (personal contributions supplied by the owner):
+  # https://api.sebizateknoloji.com/pdf/publications/16372431730126406.pdf
+- organization: Bilkent University
+  location: Ankara, Turkey
+  roles:
+  - title: Undergraduate Researcher
+    dates: Feb 2024 – Jun 2026
+  description: Developed data-driven solutions to human-body inverse kinematics problems using Laban Movement
+    Analysis, supervised by Prof. Uğur Güdükbay. The work culminated in a paper published in Computers
+    & Graphics and presented at SMI 2026, where it received an Honorable Mention.
+- organization: Inria — VIRTUS team
+  location: Rennes, France
+  roles:
+  - title: Research Intern
+    dates: Jun – Aug 2025
+  description: Designed and implemented an immersive VR experiment in Unity investigating expressive conversational
+    virtual agents. Ran a user study on how agent personality traits shape user engagement and learning.
+    Mentored by Dr. Katja Zibrek.
+- organization: MobileAction
+  location: Ankara, Turkey
+  roles:
+  - title: Software Engineer Intern
+    dates: Jul 2024
+  description: Built modular backend services with Spring Boot, Java, and RabbitMQ, and web interfaces
+    with Vue.js and TailwindCSS.
+  cv_bullets:
+  - Developed a RESTful application using the OpenWeatherMap API to retrieve historical air pollution
+    data; used Vite, Vue.js, Pinia and TailwindCSS.
+- organization: Monkedo
+  location: Remote
+  roles:
+  - title: Backend Developer Intern
+    dates: May – Sep 2023
+  description: Built reusable API-integration components in TypeScript, making third-party APIs accessible
+    to non-technical users.
+education:
+- degree: M.S. in Computer Science
+  dates: Sep 2026 – Present
+  organization: Bilkent University
+  location: Ankara, Turkey
+  description: 'Supervisor: Prof. Uğur Güdükbay.'
+- degree: B.S. in Computer Science
+  dates: Sep 2022 – Jun 2026
+  organization: Bilkent University
+  location: Ankara, Turkey
+  description: Graduated summa cum laude with a CGPA of 3.92 / 4.00, ranked 4th in cohort. Admitted on
+    a full (100%) merit scholarship after ranking 266th nationally in the university entrance exam (YKS)
+    among 3M+ candidates.
+  cv_bullets:
+  - 'Received A+ grades in 12 courses: CS101, CS102, CS202, CS224, CS315, CS464, CS465, CS473, MATH102,
+    MATH230, PHYS101 and IE400.'
+- degree: Mathematics programme
+  organization: Atakum Science and Art Center
+  location: Samsun, Turkey
+  dates: 2012 – 2022
+  description: Selective institution for gifted students; early independent mathematics research, two
+    TÜBİTAK awards and one article.
+  website: false
+- degree: High School Diploma
+  organization: Garip Zeycan Yıldırım Science High School
+  location: Samsun, Turkey
+  dates: 2018 – 2022
+  description: 'CGPA: 98.58 / 100.'
+  website: false
+awards:
+- Summa Cum Laude — Bilkent University (CGPA 3.92 / 4.00, 4th in cohort).
+- High Honor Student — all 8 semesters at Bilkent University.
+- inzva Algorithm Competition, Winter Camp 2024 — 2nd place; selected as 1 of 50 from 222 students nationwide.
+- inzva Algorithm Competition, Summer Camp 2024 — advanced level; selected as 1 of 50 from 121 students
+  nationwide.
+- TÜBİTAK 2204 Research Competition — Regional 1st place (2020) and 2nd place (2021).

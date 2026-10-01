@@ -1,0 +1,143 @@
+<!-- Generated website template: professional content comes from profile.yaml. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>{{NAME}} — {{HEADLINE}}</title>
+<meta name="description" content="{{DESCRIPTION}}" />
+<meta name="author" content="{{NAME}}" />
+<link rel="canonical" href="{{WEBSITE}}" />
+
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="{{NAME}}" />
+<meta property="og:title" content="{{NAME}} — {{HEADLINE}}" />
+<meta property="og:description" content="{{DESCRIPTION}}" />
+<meta property="og:url" content="{{WEBSITE}}" />
+<meta property="og:image" content="{{WEBSITE}}profile.jpg" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{{NAME}} — {{HEADLINE}}" />
+<meta name="twitter:description" content="{{DESCRIPTION}}" />
+<meta name="twitter:image" content="{{WEBSITE}}profile.jpg" />
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="styles.css" />
+
+
+<script type="application/ld+json">
+{{STRUCTURED_DATA}}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="nav__brand" href="#top">{{BRAND}}</a>
+    <div class="nav__links">
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#experience">Experience</a>
+      <a href="#blogs">Blogs</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+      <span aria-hidden="true">☾</span>
+    </button>
+  </nav>
+</header>
+
+<main id="top" class="container">
+
+
+  <section class="intro">
+
+    <img id="avatar-img" class="avatar" src="profile.jpg" alt="{{NAME}}" />
+    <div id="avatar-fallback" class="avatar avatar--placeholder" aria-hidden="true" hidden>{{INITIALS}}</div>
+
+    <div class="intro__text">
+      <h1>{{NAME}}</h1>
+      <p class="intro__affil muted">{{AFFILIATION}} · {{LOCATION}}</p>
+
+      <div class="links">
+{{LINKS}}
+      </div>
+    </div>
+  </section>
+
+
+  {{RESEARCH}}
+
+
+  {{PUBLICATIONS}}
+
+
+  {{EXPERIENCE}}
+
+
+  {{EDUCATION}}
+
+
+  {{AWARDS}}
+
+  <section id="blogs" class="section">
+    <h2>Blogs</h2>
+    <ul>
+      <li><a href="blogs/fdd/">Frequency domain decomposition</a></li>
+    </ul>
+  </section>
+
+
+  <section id="contact" class="section">
+    <h2>Contact</h2>
+    <p>
+      The best way to reach me is by email:
+      <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>.
+      You can also find me on
+      <a href="{{LINKEDIN}}" target="_blank">LinkedIn</a>.
+    </p>
+    <p class="muted">{{LOCATION}}</p>
+  </section>
+
+</main>
+
+<footer class="site-footer container">
+  <p>© <span id="year">2026</span> {{NAME}}.</p>
+</footer>
+
+<script>
+  // Footer year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Show initials fallback if the photo is missing
+  (function () {
+    var img = document.getElementById("avatar-img");
+    if (!img) return;
+    img.addEventListener("error", function () {
+      img.hidden = true;
+      var fb = document.getElementById("avatar-fallback");
+      if (fb) fb.hidden = false;
+    });
+  })();
+
+  // Theme toggle (remembers your choice)
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById("theme-toggle");
+    var saved = localStorage.getItem("theme");
+    if (saved) root.setAttribute("data-theme", saved);
+    btn.addEventListener("click", function () {
+      var current = root.getAttribute("data-theme");
+      var isDark =
+        current === "dark" ||
+        (!current && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      var next = isDark ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+    });
+  })();
+</script>
+</body>
+</html>
