@@ -14,7 +14,7 @@
 .article h2 { font-size: 1.35rem; font-family: inherit; font-weight: 700; line-height: 1.35; margin: 0 0 14px; letter-spacing: normal; }
 .article h3 { font-size: 1.0625rem; margin: 24px 0 12px; line-height: 1.4; }
 .article p { margin: 16px 0; }
-.article .eq { display: grid; grid-template-columns: minmax(0, 1fr) 28px; align-items: center; gap: 10px; padding: 4px 0; margin: 16px 0; }
+.article .eq { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 10px; padding: 4px 0; margin: 16px 0; }
 .equation-scroll { overflow-x: auto; }
 .eq .number { color: var(--muted); font-size: .75rem; text-decoration: none; text-align: right; }
 .eq .katex-display > .katex { width: max-content; min-width: 100%; }
@@ -57,3 +57,51 @@
 @media (max-width: 520px) { .article-layout { padding: 26px 20px 50px; } .reading-nav { padding: 18px 20px; gap: 18px; } .lab { padding: 18px 12px; margin-left: -4px; margin-right: -4px; } .lab .controls { grid-template-columns: 1fr; gap: 4px; } .notation { grid-template-columns: 1fr; gap: 4px; } .notation dd { margin-bottom: 10px; } .article .eq { padding-left: 6px; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 @media print { .reading-header, .controls, .skip { display: none; } .article-layout { display: block; max-width: none; padding: 0; } body { background: white; color: black; } .article h1 { font-size: 30pt; } .lab { break-inside: avoid; } .article .eq { overflow: visible; } }
+
+/* ---------- Tutorial structure ---------- */
+.article .lede { font-size: 1.15rem; line-height: 1.55; margin-top: 0; color: var(--text); }
+.article .sec-num { color: var(--accent); font-weight: 700; margin-right: .5em; font-variant-numeric: tabular-nums; }
+.article .part-band { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 52px 0 0; padding-top: 20px; border-top: 1px solid var(--border); }
+.article .part-kicker { color: var(--accent); font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.article .part-name { font-family: var(--font-head); font-size: 1.3rem; font-weight: 700; }
+.article .part-band + section { margin-top: 18px; }
+
+/* ---------- Contents ---------- */
+.toc { margin: 30px 0 36px; padding: 20px 24px; border: 1px solid var(--border); background: var(--surface); font-size: .9375rem; line-height: 1.5; }
+.toc-heading { margin: 0 0 8px; color: var(--muted); font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.toc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 32px; }
+.toc-group { min-width: 0; }
+.toc-part { margin: 0 0 2px; font-family: var(--font-head); font-weight: 700; }
+.toc-list { margin: 0; padding-left: 22px; }
+.toc-list li { margin: 2px 0; }
+.toc-list a { text-decoration: none; }
+.toc-list a:hover { text-decoration: underline; }
+
+/* ---------- Assumptions and notation ---------- */
+.assumptions { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px 16px; margin: 16px 0 24px; font-size: .9375rem; line-height: 1.55; }
+.assumptions dt { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; }
+.assumptions dd { margin: 0; }
+.article .note { font-size: .9375rem; color: var(--muted); border-left: 2px solid var(--border); padding-left: 14px; }
+
+/* ---------- Argument, callouts, algorithm ---------- */
+.article .argument { margin: 22px 0; padding: 14px 20px; border-left: 3px solid var(--accent); background: var(--surface); font-family: var(--font-head); font-size: 1.05rem; line-height: 1.55; }
+.article .callout { margin: 22px 0; padding: 16px 20px; border: 1px solid var(--border); border-left: 3px solid var(--accent); background: var(--surface); font-size: .9375rem; line-height: 1.6; }
+.article .callout p { margin: 8px 0; }
+.article .callout p:first-child { margin-top: 0; }
+.article .callout p:last-child { margin-bottom: 0; }
+.article .algorithm { margin: 24px 0; padding: 18px 22px; border: 1px solid var(--border); background: var(--surface); font-size: .9375rem; line-height: 1.55; }
+.algorithm-title { margin: 0 0 10px; color: var(--accent); font-family: var(--font-body); font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.algorithm ol { margin: 0; padding-left: 22px; }
+.algorithm li { margin: 7px 0; }
+.algorithm p:last-child { margin-bottom: 0; }
+
+@media (max-width: 700px) {
+  .toc-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+  .toc { padding: 16px 18px; font-size: .9rem; }
+  .toc-grid { gap: 14px; }
+  .assumptions { grid-template-columns: 40px minmax(0, 1fr); gap: 8px 12px; }
+  .article .part-band { margin-top: 40px; }
+}
