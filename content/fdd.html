@@ -18,7 +18,6 @@
 <p class="eyebrow">Tutorial</p>
 <h1>Frequency domain decomposition</h1>
 <p class="lede">Output-only modal analysis asks what a structure is doing when only its vibration is measured. This page derives frequency domain decomposition from first principles: energy, the equation of motion, eigenvalues, transfer functions, power spectra, and the singular value decomposition. It then derives enhanced FDD for damping. Every approximation is stated where it enters, together with the assumption that licenses it.</p>
-<p>FDD answers three practical questions. Which frequencies does the structure prefer? What relative motion do its points have at those frequencies? How much damping does each of those motions have? The first two are answered by decomposing a measured spectral matrix at each frequency. The third is answered by transforming a selected part of that spectrum back into a decaying correlation. The derivation is longer than the recipe, because the recipe is only valid under conditions that the derivation makes explicit.</p>
 </header>
 
 <nav class="toc" aria-label="Contents">
@@ -77,78 +76,77 @@
 
 <section id="assumptions">
 <h2>Assumptions we use</h2>
-<p>The derivation is exact under the first group of assumptions and approximate under the last two. Each assumption is numbered so that later sections can refer to it, and each is revisited in <a href="#practice">§9</a> where its failure is discussed. If you want the short version: the structure is linear and viscously damped, its eigenvalues are simple and stable, the excitation is stationary and random, the sensors are synchronized and calibrated, and near a resonance one mode dominates the measured response.</p>
+<p>The derivation is exact under A0–A6 and A8. A7 is an estimation assumption; A9 and A10 are the FDD and EFDD approximations. Each is used where noted and revisited in <a href="#practice">§9</a>.</p>
 
 <h3>Model</h3>
 <dl class="assumptions">
-<dt>A0</dt><dd><strong>Output-only.</strong> Only the outputs \(y(t)\) are measured. The inputs \(x(t)\) are unknown and are modeled as a random process. No measured force is available to normalize the result.</dd>
-<dt>A1</dt><dd><strong>Linear, time-invariant, finite-dimensional.</strong> The structure has \(n\) displacement coordinates, \(r\) force inputs, and \(p\) sensors. Displacements are small about a static equilibrium, so \(M,C,K\) are constant matrices.</dd>
-<dt>A2</dt><dd><strong>Viscous damping.</strong> Damping is represented by a constant matrix \(C\). General damping can make the modes complex; the residue derivation still holds, but a “mode” is then a complex mode, not a real standing wave.</dd>
-<dt>A3</dt><dd><strong>Linear input and output maps.</strong> Forces enter as \(Bx\) and sensors read \(Lq\). There are no sensor dynamics, time delays, saturation, or nonlinearities. Sensor gains and directions are absorbed into \(L\).</dd>
-<dt>A4</dt><dd><strong>Matrix properties.</strong> \(M=M^T\succ0\), \(K=K^T\succeq0\), and \(C=C^T\succeq0\). If the structure is restrained, \(K\succ0\); a free-free structure has rigid-body modes with \(K\phi=0\). These properties follow from energy in <a href="#energy-matrices">§2.4</a>.</dd>
-<dt>A5</dt><dd><strong>Simple, stable eigenvalues.</strong> The \(2n\) eigenvalues of the quadratic pencil are distinct, have negative real part, and occur in conjugate pairs. Every pole is simple. Repeated or defective roots need a different expansion and are excluded here.</dd>
+<dt>A0</dt><dd><strong>Output-only.</strong> Only \(y(t)\) is measured; \(x(t)\) is unknown and modeled as random.</dd>
+<dt>A1</dt><dd><strong>Linear, time-invariant, finite-dimensional.</strong> \(n\) coordinates, \(r\) inputs, \(p\) sensors; small displacements about equilibrium; \(M,C,K\) constant.</dd>
+<dt>A2</dt><dd><strong>Viscous damping.</strong> Constant symmetric \(C\). General damping makes the modes complex; the residue derivation still applies.</dd>
+<dt>A3</dt><dd><strong>Linear input and output maps.</strong> Forces enter as \(Bx\), sensors read \(Lq\); no sensor dynamics, delays, or nonlinearities.</dd>
+<dt>A4</dt><dd><strong>Matrix properties.</strong> \(M=M^T\succ0\), \(K=K^T\succeq0\), \(C=C^T\succeq0\); \(K\succ0\) if restrained. Derived from energy in <a href="#energy-matrices">§2.4</a>.</dd>
+<dt>A5</dt><dd><strong>Simple, stable eigenvalues.</strong> The \(2n\) eigenvalues are distinct, stable, and in conjugate pairs; every pole is simple. Repeated or defective roots are excluded.</dd>
 </dl>
 
 <h3>Excitation and measurement</h3>
 <dl class="assumptions">
-<dt>A6</dt><dd><strong>Stationary random excitation.</strong> \(x(t)\) is zero-mean and wide-sense stationary, with finite variance and a spectral density matrix in the band of interest. Ergodicity lets a time average over records estimate the ensemble average.</dd>
-<dt>A7</dt><dd><strong>Accurate estimate.</strong> The estimated spectral matrix \(\widehat G_y\) is close to the true \(G_y\). Finite-record bias, variance, leakage, and resolution are treated separately in <a href="#spectral-estimation">Appendix D</a>.</dd>
-<dt>A8</dt><dd><strong>Clean, synchronized measurements.</strong> Measurement noise is zero or uncorrelated with the response. Channels are synchronized, calibrated, and share a known orientation and units.</dd>
-<dt>A9</dt><dd><strong>One dominant mode in the band.</strong> Across the band used for a mode, the force spectral matrix is approximately constant, \(G_x(f)\approx Q_x\), and the selected mode dominates the excited response: the residual \(E_m\) is small relative to the selected term. This is the FDD approximation, made precise in <a href="#rankone">§6</a>.</dd>
-<dt>A10</dt><dd><strong>One mode in the bell.</strong> For EFDD, the selected spectral bell contains one mode and its correlation decays as a single exponential. Close modes, beating, or a truncated bell violate this assumption.</dd>
+<dt>A6</dt><dd><strong>Stationary random excitation.</strong> \(x\) is zero-mean, wide-sense stationary, with finite variance and a spectral density matrix; ergodicity lets time averages estimate ensemble averages.</dd>
+<dt>A7</dt><dd><strong>Accurate estimate.</strong> \(\widehat G_y\) is close to \(G_y\); finite-record errors are treated in <a href="#spectral-estimation">Appendix D</a>.</dd>
+<dt>A8</dt><dd><strong>Clean, synchronized measurements.</strong> Noise is zero or uncorrelated with the response; channels are synchronized and calibrated.</dd>
+<dt>A9</dt><dd><strong>One dominant mode in the band.</strong> \(G_x(f)\approx Q_x\), and the residual \(E_m\) is small relative to the selected term. Made precise in <a href="#rankone">§6</a>.</dd>
+<dt>A10</dt><dd><strong>One mode in the bell.</strong> The EFDD bell contains one mode and its correlation decays as a single exponential.</dd>
 </dl>
 
 <h3>Conventions</h3>
 <dl class="assumptions">
-<dt>A11</dt><dd><strong>Fourier and spectral conventions.</strong> \(j^2=-1\). The Fourier transform uses \(e^{-j2\pi ft}\). The spectral matrix \(G_y\) is two-sided unless marked \(^+\); for a one-sided spectrum, interior positive-frequency bins are doubled and the DC and Nyquist bins are not. \(f\) is in hertz and \(\omega=2\pi f\) is in radians per second. A displacement PSD has units of displacement squared per hertz.</dd>
-<dt>A12</dt><dd><strong>Scale and phase are not identified.</strong> The measured shape is determined only up to a complex scale. Output-only data do not determine modal mass or an absolute shape normalization. Only relative amplitudes and phases are meaningful.</dd>
+<dt>A11</dt><dd><strong>Fourier and spectral conventions.</strong> \(j^2=-1\); Fourier transform \(e^{-j2\pi ft}\); \(G_y\) two-sided unless marked \(^+\); one-sided spectra double interior bins but not DC or Nyquist; \(f\) in hertz, \(\omega=2\pi f\); displacement PSD in \(\text{unit}^2/\text{Hz}\).</dd>
+<dt>A12</dt><dd><strong>Scale and phase are not identified.</strong> The shape is fixed only up to a complex scale; modal mass is not identifiable.</dd>
 </dl>
-<p class="note">The derivation is exact under A0–A6 and A8. A7 is an estimation assumption. A9 is the approximation that makes FDD work, and A10 is the approximation that makes EFDD work. When either fails, the method does not become invalid; it returns a mixture, a biased estimate, or a subspace instead of one shape, as <a href="#fdd-overlap">§7.4</a> and <a href="#practice">§9</a> explain.</p>
 </section>
 
 <section id="notation">
 <h2>Notation</h2>
-<p>A dot denotes a time derivative, an overbar denotes complex conjugation, and \(^H\) denotes the conjugate transpose. The scalar examples use \(u\) for displacement and \(F\) for force, to avoid overloading \(q\) and \(x\). The symbol \(H(s)\) without a superscript is the transfer matrix; \(^H\) with a superscript is an operation. The two are distinguished in every equation. Vectors are columns unless transposed.</p>
+<p>A dot is a time derivative, an overbar complex conjugation, and \(^H\) the conjugate transpose. Scalar examples use \(u\) for displacement and \(F\) for force. \(H(s)\) is the transfer matrix; \(^H\) is an operation.</p>
 <dl class="notation">
-<dt>\(t\)</dt><dd>Time, in seconds.</dd>
-<dt>\(f,\ \omega\)</dt><dd>Frequency in hertz; angular frequency \(\omega=2\pi f\) in radians per second.</dd>
+<dt>\(t\)</dt><dd>Time; seconds.</dd>
+<dt>\(f,\ \omega\)</dt><dd>Frequency in hertz; \(\omega=2\pi f\) in radians per second.</dd>
 <dt>\(j\)</dt><dd>Imaginary unit, \(j^2=-1\).</dd>
-<dt>\(s=\sigma+j\omega\)</dt><dd>Complex Laplace variable. The real part \(\sigma\) is an exponential weighting rate; the imaginary part is angular frequency.</dd>
-<dt>\(q(t)\in\mathbb R^n\)</dt><dd>Displacement coordinates, measured from static equilibrium; metres.</dd>
+<dt>\(s=\sigma+j\omega\)</dt><dd>Complex Laplace variable.</dd>
+<dt>\(q(t)\in\mathbb R^n\)</dt><dd>Displacements from equilibrium; metres.</dd>
 <dt>\(x(t)\in\mathbb R^r\)</dt><dd>Force inputs; newtons.</dd>
 <dt>\(y(t)\in\mathbb R^p\)</dt><dd>Measured outputs; sensor units.</dd>
-<dt>\(n,\ r,\ p\)</dt><dd>Number of coordinates, force inputs, and sensors.</dd>
-<dt>\(M,\ C,\ K\)</dt><dd>Mass, viscous damping, and stiffness matrices; \(n\times n\).</dd>
-<dt>\(B,\ L\)</dt><dd>Input matrix \(n\times r\) and output matrix \(p\times n\).</dd>
-<dt>\(Z(s)\)</dt><dd>Dynamic stiffness \(s^2M+sC+K\); \(n\times n\).</dd>
-<dt>\(\mathcal T(s)\)</dt><dd>Transfer from forces to all coordinates, \(Z(s)^{-1}B\); \(n\times r\). It is used only to derive the residue structure; the measured transfer is \(H=L\mathcal T\).</dd>
-<dt>\(H(s)\)</dt><dd>Transfer matrix \(LZ(s)^{-1}B\); \(p\times r\). Its entry \(H_{ik}\) maps input \(k\) to sensor \(i\).</dd>
-<dt>\(\lambda_m\)</dt><dd>Eigenvalue (pole) of the mechanical system; inverse seconds.</dd>
-<dt>\(\phi_m\)</dt><dd>Mode shape at the \(n\) coordinates; \(n\times1\), complex in general.</dd>
-<dt>\(v_m=L\phi_m\)</dt><dd>Mode shape as seen by the \(p\) sensors; \(p\times1\).</dd>
-<dt>\(\gamma_m\)</dt><dd>Input-coupling vector for mode \(m\); \(r\times1\).</dd>
-<dt>\(R_m=v_m\gamma_m^T\)</dt><dd>Residue matrix of mode \(m\); \(p\times r\), rank one.</dd>
-<dt>\(\alpha_m,\ \omega_{d,m},\ \omega_{n,m},\ \zeta_m\)</dt><dd>Decay rate, damped angular frequency, natural angular frequency, and damping ratio of mode \(m\).</dd>
-<dt>\(G_y(f),\ G_x(f)\)</dt><dd>Output and input power spectral density (PSD) matrices; \(p\times p\) and \(r\times r\).</dd>
-<dt>\(Y_T(f)\)</dt><dd>Fourier transform of a finite record of \(y(t)\); a random vector.</dd>
-<dt>\(U,\ S,\ s_k,\ u_k\)</dt><dd>Eigendecomposition or singular value decomposition: unitary matrix, diagonal singular values, singular value \(k\), singular vector \(k\).</dd>
-<dt>\(\operatorname{MAC}(u,v)\)</dt><dd>Modal assurance criterion, a normalized squared inner product in \([0,1]\).</dd>
-<dt>\(\delta,\ T_d,\ \mathcal R_m(\tau)\)</dt><dd>Logarithmic decrement, damped period, and autocorrelation of the selected bell at lag \(\tau\).</dd>
-<dt>\(\mathbb E[\cdot]\)</dt><dd>Expectation, an average over possible records under the same statistical conditions.</dd>
-<dt>\(\|\cdot\|,\ \|\cdot\|_2\)</dt><dd>Euclidean vector norm and matrix spectral norm (largest amplification of a unit vector).</dd>
+<dt>\(n,\ r,\ p\)</dt><dd>Coordinates, inputs, sensors.</dd>
+<dt>\(M,\ C,\ K\)</dt><dd>Mass, damping, stiffness; \(n\times n\).</dd>
+<dt>\(B,\ L\)</dt><dd>Input \(n\times r\) and output \(p\times n\) matrices.</dd>
+<dt>\(Z(s)\)</dt><dd>Dynamic stiffness \(s^2M+sC+K\).</dd>
+<dt>\(\mathcal T(s)\)</dt><dd>Force-to-coordinate transfer \(Z(s)^{-1}B\); \(H=L\mathcal T\).</dd>
+<dt>\(H(s)\)</dt><dd>Transfer matrix \(LZ(s)^{-1}B\); \(p\times r\). \(H_{ik}\) maps input \(k\) to sensor \(i\).</dd>
+<dt>\(\lambda_m\)</dt><dd>Eigenvalue (pole); inverse seconds.</dd>
+<dt>\(\phi_m\)</dt><dd>Mode shape at the \(n\) coordinates; complex in general.</dd>
+<dt>\(v_m=L\phi_m\)</dt><dd>Measured shape; \(p\times1\).</dd>
+<dt>\(\gamma_m\)</dt><dd>Input-coupling vector; \(r\times1\).</dd>
+<dt>\(R_m=v_m\gamma_m^T\)</dt><dd>Residue matrix; \(p\times r\), rank one.</dd>
+<dt>\(\alpha_m,\ \omega_{d,m},\ \omega_{n,m},\ \zeta_m\)</dt><dd>Decay rate, damped frequency, natural frequency, damping ratio.</dd>
+<dt>\(G_y(f),\ G_x(f)\)</dt><dd>Output and input PSD matrices; \(p\times p\), \(r\times r\).</dd>
+<dt>\(Y_T(f)\)</dt><dd>Fourier transform of a finite record of \(y\).</dd>
+<dt>\(U,\ S,\ s_k,\ u_k\)</dt><dd>Eigendecomposition or SVD: vectors, values, value \(k\), vector \(k\).</dd>
+<dt>\(\operatorname{MAC}(u,v)\)</dt><dd>Modal assurance criterion, in \([0,1]\).</dd>
+<dt>\(\delta,\ T_d,\ \mathcal R_m(\tau)\)</dt><dd>Log decrement, damped period, autocorrelation at lag \(\tau\).</dd>
+<dt>\(\mathbb E[\cdot]\)</dt><dd>Expectation over records.</dd>
+<dt>\(\|\cdot\|,\ \|\cdot\|_2\)</dt><dd>Euclidean norm; matrix spectral norm.</dd>
 </dl>
 </section>
 
 <section id="roadmap">
 <h2>The argument in one page</h2>
-<p>The whole derivation is one chain. Each link uses only the link before it and the assumptions listed at the start.</p>
+<p>Each link uses only the link before it and the assumptions above.</p>
 <blockquote class="argument">Energy gives the equations of motion. Free vibration gives poles and mode shapes. Forcing makes each pole a rank-one residue. Random forcing makes the response PSD a sum of those rank-one terms. When one term dominates, the leading eigenvector of the PSD is the measured shape. The width of that term gives the damping.</blockquote>
 <div class="table-wrap"><table>
 <thead><tr><th scope="col">Result</th><th scope="col">Comes from</th><th scope="col">Uses</th></tr></thead>
 <tbody>
-<tr><td>\(M\ddot q+C\dot q+Kq=Bx\)</td><td>Energy balance or Lagrange’s equations</td><td>A1–A4</td></tr>
+<tr><td>\(M\ddot q+C\dot q+Kq=Bx\)</td><td>Energy balance or Lagrange</td><td>A1–A4</td></tr>
 <tr><td>\(\lambda_m,\ \phi_m\)</td><td>\((s^2M+sC+K)\phi=0\)</td><td>A1, A5</td></tr>
-<tr><td>\(H(s)=LZ(s)^{-1}B\)</td><td>Laplace transform of the equation of motion</td><td>A1, zero initial conditions</td></tr>
+<tr><td>\(H(s)=LZ(s)^{-1}B\)</td><td>Laplace transform of the EOM</td><td>A1, zero initial conditions</td></tr>
 <tr><td>\(R_m=v_m\gamma_m^T\)</td><td>Residue at a simple pole</td><td>A5</td></tr>
 <tr><td>\(G_y=H G_x H^H\)</td><td>\(Y=HX\) and stationarity</td><td>A6</td></tr>
 <tr><td>\(G_y\approx d_m v_m v_m^H\)</td><td>Modal sum and white forcing</td><td>A9</td></tr>
@@ -157,348 +155,315 @@
 </tbody>
 </table></div>
 <div class="callout">
-<p><strong>FDD is PCA at every frequency.</strong> At each frequency, \(G_y(f)\) is a \(p\times p\) Hermitian positive-semidefinite matrix. Diagonalizing it is the same operation as principal component analysis on the sensor channels, with one difference: \(G_y\) is already a second-moment matrix, so no centering step is needed. The first eigenvector is the dominant spatial direction at that frequency. FDD is the statement that, near a resonance, this direction is the mode shape.</p>
+<p><strong>FDD is PCA at every frequency.</strong> \(G_y(f)\) is Hermitian positive semidefinite, so diagonalizing it is PCA on the sensor channels without centering. The first eigenvector is the dominant spatial direction; FDD identifies it with the mode shape near a resonance.</p>
 </div>
-<p>The page is written to be read in order. Sections <a href="#problem">1</a>–<a href="#fdd">7</a> are the core argument. Section <a href="#efdd">8</a> adds damping. Section <a href="#practice">9</a> is a checklist for measurements. The appendices contain the longer proofs; each is referenced from the point where its result is used, so you can skip it on a first reading and return when you want the details.</p>
 </section>
 
 <div class="part-band"><span class="part-kicker">Part I</span><span class="part-name">The model</span></div>
 
 <section id="problem">
 <h2><span class="sec-num">1</span>The measurement problem</h2>
-<p>A structure is vibrating. We attach sensors at a few points, record their motion for a while, and never measure the forces that caused the motion. From those records we want three things: the frequencies at which the structure prefers to vibrate, the relative motion of the sensor points at each such frequency, and how quickly that motion dies away. The first two are the frequencies and shapes of the structure’s modes. The third is their damping.</p>
-<p>A <em>mode shape</em> is a fixed pattern of relative amplitudes and phases. If a single mode were the only motion present, every sensor record would be a scalar multiple of one fixed vector, with the same time dependence up to that scalar. Two sensors might move in the same direction with amplitudes in the ratio \(1:2\), or in opposite directions with a phase difference of \(180^\circ\). The ratio and the phase difference would not change with time. That fixed pattern is the shape.</p>
-<p>Real records contain several modes at once, so the instantaneous ratio between two sensors usually changes with time. The shape is therefore not visible by inspecting the time histories directly. It becomes visible in a narrow frequency band around a resonance, where one mode may dominate the response. FDD looks for a fixed spatial pattern <em>within a frequency band</em>, and it uses the fact that a single dominant mode produces a spectral matrix of rank one.</p>
-<p>The method is called output-only because the inputs are not measured. Experimental modal analysis with measured inputs can normalize the shape by the input force. Output-only analysis cannot: it recovers a shape only up to an arbitrary complex scale. That limitation is not an accident of the algorithm; it follows from the structure of the equations, as <a href="#rankone">§6</a> shows.</p>
-<p>There are two stages. The first estimates the <em>cross-spectral density matrix</em> of the sensor channels at each frequency and decomposes it. The dominant direction at a peak is a shape estimate. The second stage selects a band around a peak, transforms that band back to the time domain, and fits the decay of its correlation. That decay gives the damping. The first stage is FDD; the second is EFDD.</p>
+<p>Sensors record the response \(y(t)\); the forces \(x(t)\) are unknown. We want the frequencies at which the structure vibrates, the relative motion of the sensors at those frequencies, and the decay rate. A <em>mode shape</em> is a fixed pattern of relative amplitude and phase: with one mode, every record is a scalar multiple of one vector, so the ratio between two sensors does not change with time. With several modes the ratio varies, and the pattern is visible only in a narrow band around a resonance.</p>
+<p>FDD estimates the cross-spectral matrix \(G_y(f)\) and decomposes it at each frequency; the dominant direction at a peak is the shape. EFDD selects a band around a peak, inverse-transforms it, and fits the correlation decay to get damping. Because the inputs are not measured, the shape is determined only up to a complex scale; <a href="#rankone">§6</a> shows why.</p>
 </section>
 
 <section id="energy">
 <h2><span class="sec-num">2</span>Energy and the equation of motion</h2>
-<p>Before we can decompose a spectrum, we need a model of what the spectrum is a spectrum <em>of</em>. This section derives the equation of motion from energy. The derivation is worth doing in full because the properties that FDD relies on, namely symmetry and positive semidefiniteness, are properties of the energy, not of an arbitrary matrix.</p>
+<p>FDD relies on symmetry and positive semidefiniteness, which come from energy. We derive the equation of motion from energy and check it with Lagrange’s equations.</p>
 
 <h3 id="energy-forms"><span class="sec-num">2.1</span>Energy of a vibrating structure</h3>
-<p>Let \(q(t)\in\mathbb R^n\) collect the displacement coordinates, measured from static equilibrium. For a linear structure, the kinetic energy is a quadratic form in the velocities, the strain energy is a quadratic form in the displacements, and the energy removed by viscous damping is a quadratic form in the velocities:</p>
+<p>Let \(q(t)\in\mathbb R^n\) collect displacements from static equilibrium. For a linear structure,</p>
 <div class="eq" id="eq-energy-matrix"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.1; scroll horizontally if needed">\[T=\tfrac12\dot q^TM\dot q,\qquad V=\tfrac12q^TKq,\qquad D=\tfrac12\dot q^TC\dot q.\]</div><a class="number" href="#eq-energy-matrix">(2.1)</a></div>
-<p>Here \(M\), \(K\), and \(C\) are the mass, stiffness, and viscous damping matrices. The external forces do work through a virtual displacement \(\delta q\). If the forces are linear in the \(r\) inputs \(x(t)\), that work is</p>
-<div class="equation-scroll" tabindex="0" role="region" aria-label="Virtual work of the external forces">\[\delta W=(Bx)^T\delta q=x^TB^T\delta q.\]</div>
-<p>The matrix \(B\), of size \(n\times r\), distributes each input to the coordinates. The vector \(Bx\) is the generalized force vector. The measured outputs are a linear map of the coordinates,</p>
+<p>\(M,K,C\) are the mass, stiffness, and viscous damping matrices. External forces do virtual work</p>
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Virtual work of the external forces">\[\delta W=(Bx)^T\delta q=x^TB^T\delta q,\]</div>
+<p>where \(B\) is \(n\times r\); \(Bx\) is the generalized force. Sensors read</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Linear sensor model">\[y=Lq,\]</div>
-<p>with \(L\) of size \(p\times n\). Each row of \(L\) combines the coordinates into one sensor reading.</p>
-<p>The quadratic forms are not an arbitrary modelling choice. Expand the true energy in a Taylor series about equilibrium. The linear term vanishes because equilibrium is a stationary point of the potential. The constant term can be taken as zero. For small displacements, the quadratic term dominates, and every higher-order term is negligible. That is the content of assumption A1. The matrices are therefore the second derivatives of the energy at equilibrium, which is why they are symmetric.</p>
+<p>with \(L\) of size \(p\times n\). The quadratic forms follow from a Taylor expansion about equilibrium: the linear term vanishes at a stationary point, the constant can be taken as zero, and the quadratic term dominates for small displacements (A1). The matrices are second derivatives of the energy, hence symmetric.</p>
 
 <h3 id="energy-scalar"><span class="sec-num">2.2</span>One degree of freedom</h3>
-<p>Start with a mass \(\mu&gt;0\), a spring \(k&gt;0\), a viscous damper \(b\ge0\), and a force \(F(t)\). Let \(u(t)\) be the displacement from equilibrium. The three energies and the virtual work are</p>
+<p>Take a mass \(\mu&gt;0\), spring \(k&gt;0\), damper \(b\ge0\), force \(F(t)\), and displacement \(u(t)\). The energies and virtual work are</p>
 <div class="eq" id="eq-energy-scalar"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.2; scroll horizontally if needed">\[T=\tfrac12\mu\dot u^2,\qquad V=\tfrac12ku^2,\qquad D=\tfrac12b\dot u^2,\qquad \delta W=F\,\delta u.\]</div><a class="number" href="#eq-energy-scalar">(2.2)</a></div>
-<p>The energy balance says that the rate of change of stored energy equals the power supplied by the force minus the power dissipated by the damper:</p>
+<p>Energy balance equates the rate of stored energy to the supplied power minus the dissipated power:</p>
 <div class="eq" id="eq-energy-balance"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.3; scroll horizontally if needed">\[\frac{d}{dt}(T+V)=F\dot u-b\dot u^2.\]</div><a class="number" href="#eq-energy-balance">(2.3)</a></div>
-<p>Differentiate the left side:</p>
-<div class="equation-scroll" tabindex="0" role="region" aria-label="Expanding the energy balance">\[\mu\dot u\ddot u+ku\dot u=F\dot u-b\dot u^2.\]</div>
-<p>Bring every term to one side and factor out \(\dot u\):</p>
-<div class="equation-scroll" tabindex="0" role="region" aria-label="Factored energy balance">\[\dot u\bigl(\mu\ddot u+b\dot u+ku-F\bigr)=0.\]</div>
-<p>At any instant where \(\dot u\ne0\), we may divide by \(\dot u\). At an instant where \(\dot u=0\), the bracket need not be zero from this equation alone, but the acceleration and the force are continuous functions of time for the systems considered here, so the bracket is the limit of its values at nearby times and must vanish there as well. Therefore</p>
+<p>Differentiate and factor:</p>
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Expanding the energy balance">\[\mu\dot u\ddot u+ku\dot u=F\dot u-b\dot u^2\quad\Longrightarrow\quad\dot u\bigl(\mu\ddot u+b\dot u+ku-F\bigr)=0.\]</div>
+<p>When \(\dot u\ne0\), divide. When \(\dot u=0\), continuity of \(\ddot u\) and \(F\) makes the bracket vanish as a limit. Hence</p>
 <div class="eq" id="eq-scalar-eom"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.4; scroll horizontally if needed">\[\mu\ddot u+b\dot u+ku=F.\]</div><a class="number" href="#eq-scalar-eom">(2.4)</a></div>
-<p>Each term has units of force: \(\mu\ddot u\) is mass times acceleration, \(b\dot u\) is a damping coefficient times velocity, and \(ku\) is a stiffness times displacement. Dividing by \(\mu\) gives the normalized form used later,</p>
+<p>Each term is a force. Dividing by \(\mu\) gives the normalized form</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Normalized scalar equation">\[\ddot u+\frac{b}{\mu}\dot u+\frac{k}{\mu}u=\frac{F}{\mu}.\]</div>
-<p>The same equation follows from Lagrange’s equations. They are worth writing once because they generalize directly to many coordinates. Let the Lagrangian be \(T-V\), and let \(D\) be the Rayleigh dissipation function. For a generalized coordinate \(u\),</p>
-<div class="eq" id="eq-lagrange-scalar"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.5; scroll horizontally if needed">\[\frac{d}{dt}\frac{\partial (T-V)}{\partial\dot u}-\frac{\partial (T-V)}{\partial u}+\frac{\partial D}{\partial\dot u}=Q,\]</div><a class="number" href="#eq-lagrange-scalar">(2.5)</a></div>
-<p>where \(Q\) is the generalized force. For this system \(L=\tfrac12\mu\dot u^2-\tfrac12ku^2\), \(D=\tfrac12b\dot u^2\), and \(Q=F\). The four derivatives are</p>
+<p>Lagrange’s equations give the same result and generalize to matrices. With Lagrangian \(T-V\), dissipation \(D\), and generalized force \(Q\),</p>
+<div class="eq" id="eq-lagrange-scalar"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.5; scroll horizontally if needed">\[\frac{d}{dt}\frac{\partial (T-V)}{\partial\dot u}-\frac{\partial (T-V)}{\partial u}+\frac{\partial D}{\partial\dot u}=Q.\]</div><a class="number" href="#eq-lagrange-scalar">(2.5)</a></div>
+<p>Here \(T-V=\tfrac12\mu\dot u^2-\tfrac12ku^2\), \(D=\tfrac12b\dot u^2\), and \(Q=F\). The derivatives are</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Lagrange derivatives for the scalar oscillator">\[\frac{\partial (T-V)}{\partial\dot u}=\mu\dot u,\qquad \frac{d}{dt}\frac{\partial (T-V)}{\partial\dot u}=\mu\ddot u,\qquad \frac{\partial (T-V)}{\partial u}=-ku,\qquad \frac{\partial D}{\partial\dot u}=b\dot u.\]</div>
-<p>Substitution returns \(\mu\ddot u+ku+b\dot u=F\), which is <a href="#eq-scalar-eom">(2.4)</a>. The energy route is a scalar identity; Lagrange’s route is the general rule that produces the same equation for any choice of coordinates. We use the energy route for intuition and Lagrange’s route for the matrix case, where the bookkeeping is easier.</p>
+<p>Substitution returns <a href="#eq-scalar-eom">(2.4)</a>.</p>
 
 <h3 id="energy-matrix"><span class="sec-num">2.3</span>Many degrees of freedom</h3>
-<p>For the full structure, substitute <a href="#eq-energy-matrix">(2.1)</a> into the same balance. The stored energy is \(T+V\), and its rate of change is the power supplied by the external forces minus the dissipated power:</p>
+<p>For the full structure, energy balance is</p>
 <div class="eq" id="eq-matrix-balance"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.6; scroll horizontally if needed">\[\frac{d}{dt}\left(\tfrac12\dot q^TM\dot q+\tfrac12q^TKq\right)=\dot q^TBx-\dot q^TC\dot q.\]</div><a class="number" href="#eq-matrix-balance">(2.6)</a></div>
-<p>Because \(M\) and \(K\) are constant and symmetric, the derivatives are</p>
+<p>With \(M,K\) constant and symmetric,</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Derivatives of the matrix energy forms">\[\frac{d}{dt}\left(\tfrac12\dot q^TM\dot q\right)=\dot q^TM\ddot q,\qquad \frac{d}{dt}\left(\tfrac12q^TKq\right)=\dot q^TKq.\]</div>
-<p>Substituting and collecting the terms on the left gives</p>
+<p>Collecting terms gives</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Matrix energy balance collected">\[\dot q^T\bigl(M\ddot q+C\dot q+Kq-Bx\bigr)=0.\]</div>
-<p>This must hold at every instant and for every admissible velocity \(\dot q\). Choose \(\dot q=e_i\), the vector with a one in position \(i\) and zeros elsewhere. The equation then says that component \(i\) of the bracket is zero. Doing this for each \(i\) makes every component zero, so the bracket itself is zero:</p>
+<p>This holds for every \(\dot q\). Taking \(\dot q=e_i\) for each \(i\) makes every component of the bracket zero, so</p>
 <div class="eq" id="eq-eom"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.7; scroll horizontally if needed">\[M\ddot q+C\dot q+Kq=Bx,\qquad y=Lq.\]</div><a class="number" href="#eq-eom">(2.7)</a></div>
-<p>This is the equation that the rest of the page analyzes. The mass matrix multiplies acceleration, the damping matrix multiplies velocity, the stiffness matrix multiplies displacement, and the input matrix distributes the external forces. The sensor equation is algebraic: the measurement at each instant is a linear combination of the current displacements.</p>
 
 <h3 id="energy-matrices"><span class="sec-num">2.4</span>What the matrices mean</h3>
-<p><strong>Symmetry.</strong> Any square matrix can be split into a symmetric part and a skew-symmetric part. For a quadratic form, the skew part contributes nothing, because \(q^TAq=q^TA^Tq\) and the two terms cancel in the antisymmetric difference. Only the symmetric part matters in the energy. We therefore take \(M\), \(K\), and \(C\) symmetric without loss of generality. For \(M\) and \(K\), this follows from the energy itself. For \(C\), it is the viscous-damping assumption A2; damping mechanisms such as friction or gyroscopic effects are not described by a symmetric \(C\).</p>
-<p><strong>Positive definiteness.</strong> A symmetric matrix \(A\) is positive semidefinite if \(x^TAx\ge0\) for every vector \(x\), and positive definite if the inequality is strict whenever \(x\ne0\). The kinetic energy satisfies \(T\ge0\), and \(T=0\) only when every velocity is zero. That is exactly the statement that \(M\) is positive definite, \(M\succ0\). In particular, \(M\) is invertible. The strain energy satisfies \(V\ge0\); it is positive for every nonzero displacement only if the structure is restrained against rigid-body motion, in which case \(K\succ0\). A free-free structure has rigid-body motions with \(K\phi=0\), so \(K\) is only positive semidefinite. The dissipation satisfies \(D\ge0\), so \(C\succeq0\); it may be singular, meaning some motions are undamped.</p>
-<p><strong>Units.</strong> With \(q\) in metres and \(x\) in newtons, \(M\) has units of kilograms, \(C\) of newton-seconds per metre, and \(K\) of newtons per metre. Each term in <a href="#eq-eom">(2.7)</a> is a force. The input matrix \(B\) is dimensionless if \(x\) is a force; if an input is a torque or an acceleration, its units are absorbed into \(B\). The output matrix \(L\) carries whatever gain converts metres to sensor units.</p>
-<p><strong>A concrete case.</strong> Two masses \(m_1,m_2\) are connected by springs \(k_1,k_2,k_3\) and dampers \(c_1,c_2,c_3\), with \(k_1,c_1\) from the wall to \(m_1\), \(k_2,c_2\) between the masses, and \(k_3,c_3\) from \(m_2\) to the wall. Let \(q=[q_1,q_2]^T\). Then</p>
+<p><strong>Symmetry.</strong> \(q^TAq=q^TA^Tq\), so only the symmetric part contributes; take \(M,K,C\) symmetric. For \(M,K\) this follows from energy; for \(C\) it is A2.</p>
+<p><strong>Definiteness.</strong> \(A\) is positive semidefinite if \(x^TAx\ge0\), positive definite if strict for \(x\ne0\). \(T\ge0\), with equality only at \(\dot q=0\), so \(M\succ0\) and invertible. \(V\ge0\); a restrained structure has \(K\succ0\), a free-free structure has \(K\succeq0\) with rigid-body \(K\phi=0\). \(D\ge0\), so \(C\succeq0\), possibly singular.</p>
+<p><strong>Units.</strong> \(q\) in metres and \(x\) in newtons give \(M\) in kilograms, \(C\) in newton-seconds per metre, \(K\) in newtons per metre; each term of <a href="#eq-eom">(2.7)</a> is a force. \(B\) absorbs input units and \(L\) sensor units.</p>
+<p><strong>Two masses.</strong> Masses \(m_1,m_2\) are joined by springs \(k_1,k_2,k_3\) and dampers \(c_1,c_2,c_3\), with \(k_1,c_1\) from the wall to \(m_1\), \(k_2,c_2\) between the masses, and \(k_3,c_3\) from \(m_2\) to the wall. With \(q=[q_1,q_2]^T\),</p>
 <div class="eq" id="eq-two-dof"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.8; scroll horizontally if needed">\[M=\begin{bmatrix}m_1&0\\0&m_2\end{bmatrix},\qquad K=\begin{bmatrix}k_1+k_2&-k_2\\-k_2&k_2+k_3\end{bmatrix},\qquad C=\begin{bmatrix}c_1+c_2&-c_2\\-c_2&c_2+c_3\end{bmatrix}.\]</div><a class="number" href="#eq-two-dof">(2.8)</a></div>
-<p>The off-diagonal entries are negative because the middle spring and damper pull the two masses toward each other: a positive displacement of \(m_1\) stretches the middle spring and produces a negative force on \(m_2\). The symmetry is visible. The quadratic forms are</p>
+<p>The off-diagonal entries are negative because the middle spring and damper pull the masses together. The energies are</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Strain and dissipation energies of the two-mass example">\[V=\tfrac12\left[k_1q_1^2+k_2(q_2-q_1)^2+k_3q_2^2\right],\qquad D=\tfrac12\left[c_1\dot q_1^2+c_2(\dot q_2-\dot q_1)^2+c_3\dot q_2^2\right].\]</div>
-<p>Each bracket is a sum of squares with positive coefficients, so \(V\ge0\) and \(D\ge0\). The matrix \(K\) is positive definite when \(k_1+k_2&gt;0\) and the determinant \(k_1k_2+k_1k_3+k_2k_3&gt;0\), which holds for positive springs. If a force acts on \(m_1\) only, \(B=[1,0]^T\). If both displacements are measured, \(L=I\). This example is small enough to check by hand and rich enough to show where the matrix entries come from.</p>
+<p>Each bracket is a sum of squares with positive coefficients, so \(V,D\ge0\). \(K\succ0\) when \(k_1+k_2&gt;0\) and \(k_1k_2+k_1k_3+k_2k_3&gt;0\), which holds for positive springs. A force on \(m_1\) gives \(B=[1,0]^T\); measuring both displacements gives \(L=I\).</p>
 
 <h3 id="energy-lagrange"><span class="sec-num">2.5</span>Lagrange’s equations for the matrix case</h3>
-<p>The same equation follows from Lagrange’s equations with \(q\) as the generalized coordinate. This is the derivation that makes the result independent of the particular coordinates chosen. With the Lagrangian \(T-V\) and generalized forces \(Q=Bx\),</p>
+<p>With \(q\) as the generalized coordinate and \(Q=Bx\),</p>
 <div class="eq" id="eq-lagrange-matrix"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 2.9; scroll horizontally if needed">\[\frac{d}{dt}\frac{\partial (T-V)}{\partial\dot q}-\frac{\partial (T-V)}{\partial q}+\frac{\partial D}{\partial\dot q}=Q.\]</div><a class="number" href="#eq-lagrange-matrix">(2.9)</a></div>
-<p>Compute each term. Since \(T=\tfrac12\dot q^TM\dot q\),</p>
+<p>Since \(T=\tfrac12\dot q^TM\dot q\) and \(V\) does not depend on \(\dot q\),</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Derivative of kinetic energy with respect to velocity">\[\frac{\partial T}{\partial\dot q}=M\dot q,\qquad \frac{d}{dt}\frac{\partial T}{\partial\dot q}=M\ddot q,\]</div>
-<p>where the second equality uses the fact that \(M\) is constant. Since \(V=\tfrac12q^TKq\), component \(i\) of its gradient is</p>
+<p>because \(M\) is constant. Since \(V=\tfrac12q^TKq\), component \(i\) of its gradient is</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Derivative of strain energy with respect to displacement">\[\frac{\partial V}{\partial q_i}=\frac12\sum_{j,k}K_{jk}\frac{\partial(q_jq_k)}{\partial q_i}=\frac12\sum_kK_{ik}q_k+\frac12\sum_jK_{ji}q_j=(Kq)_i,\]</div>
-<p>where the last step uses symmetry, \(K_{ji}=K_{ij}\), and renames the summation index. The same calculation gives \(\partial D/\partial\dot q=C\dot q\). Substituting into <a href="#eq-lagrange-matrix">(2.9)</a>, with \(\partial(T-V)/\partial q=-\partial V/\partial q\), gives</p>
+<p>using \(K_{ji}=K_{ij}\) and renaming the index. Also \(\partial D/\partial\dot q=C\dot q\). Substituting into <a href="#eq-lagrange-matrix">(2.9)</a> with \(\partial(T-V)/\partial q=-\partial V/\partial q\) gives</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Assembling the matrix equation from Lagrange">\[M\ddot q+Kq+C\dot q=Bx,\]</div>
-<p>which is <a href="#eq-eom">(2.7)</a>. Lagrange’s formulation is the reason the equation is valid for any set of generalized coordinates, not only for physical displacements. It also shows why \(M\) need not be diagonal: the mass matrix couples coordinates whenever the kinetic energy contains cross terms.</p>
-<p>We now have the model. To find the motions the structure can sustain with no external force, set \(x=0\) and look for solutions that keep their spatial pattern while evolving in time.</p>
+<p>which is <a href="#eq-eom">(2.7)</a>. Lagrange’s form holds for any generalized coordinates and allows \(M\) to be non-diagonal.</p>
 </section>
 
 <section id="modes">
 <h2><span class="sec-num">3</span>Modal analysis: free vibration</h2>
-<p>Free vibration is the structure’s motion when no force acts. Its solutions are the modes: special motions in which every coordinate oscillates at the same complex rate and keeps a fixed relative amplitude and phase. This section finds those motions, expresses them as real displacements, and assigns each one a natural frequency and a damping ratio.</p>
+<p>Free vibration is the motion with no force. Its solutions are the modes: fixed spatial patterns that evolve at a single complex rate.</p>
 
 <h3 id="modes-ansatz"><span class="sec-num">3.1</span>The exponential ansatz and the quadratic eigenproblem</h3>
 <p>Set \(x=0\) in <a href="#eq-eom">(2.7)</a>:</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Free vibration equation">\[M\ddot q+C\dot q+Kq=0.\]</div>
-<p>This is a linear, constant-coefficient differential equation. Its solutions are built from exponentials \(e^{\lambda t}\), possibly multiplied by polynomials in \(t\) when eigenvalues repeat. We exclude repeats by A5, so the exponential alone is enough. Seek a solution in which the spatial pattern is fixed and only the scalar time factor changes:</p>
+<p>This linear constant-coefficient equation has exponential solutions; polynomial factors occur only for repeated eigenvalues, excluded by A5. Seek</p>
 <div class="eq" id="eq-ansatz"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 3.1; scroll horizontally if needed">\[q_c(t)=\phi e^{\lambda t},\qquad \dot q_c=\lambda\phi e^{\lambda t},\qquad \ddot q_c=\lambda^2\phi e^{\lambda t}.\]</div><a class="number" href="#eq-ansatz">(3.1)</a></div>
-<p>The subscript \(c\) marks a complex auxiliary solution; the physical displacement is real and is recovered below. The vector \(\phi\ne0\) is the spatial pattern and \(\lambda\) is the complex rate, in inverse seconds. Substituting into the free equation gives</p>
+<p>Here \(c\) marks the complex auxiliary solution, \(\phi\ne0\) is the spatial pattern, and \(\lambda\) is the complex rate. Substitution gives</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Substituting the ansatz">\[\left(\lambda^2M+\lambda C+K\right)\phi\,e^{\lambda t}=0.\]</div>
-<p>The exponential is never zero, so it can be cancelled. Define the dynamic stiffness matrix</p>
+<p>Cancel the exponential and define</p>
 <div class="eq" id="eq-qep"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 3.2; scroll horizontally if needed">\[Z(s)=s^2M+sC+K,\qquad Z(\lambda)\phi=0,\qquad \det Z(\lambda)=0.\]</div><a class="number" href="#eq-qep">(3.2)</a></div>
-<p>The last equality follows because a nonzero vector \(\phi\) is mapped to zero, so the matrix \(Z(\lambda)\) is singular. Conversely, if the determinant is zero, a nonzero null vector exists. Equation <a href="#eq-qep">(3.2)</a> is a quadratic eigenvalue problem: the eigenvalue appears squared, linearly, and not at all. Its characteristic polynomial \(\det Z(s)\) has degree \(2n\), because the leading term is \(\det(M)s^{2n}\) and \(M\) is invertible. It therefore has \(2n\) roots counted with multiplicity. Since the matrices are real, nonreal roots occur in conjugate pairs.</p>
-<p>For each root \(\lambda_m\), the corresponding \(\phi_m\) is a null vector of \(Z(\lambda_m)\). Its overall scale is arbitrary; multiplying \(\phi_m\) by a nonzero constant gives the same mode. For now, choose any convenient normalization.</p>
-<p>A numerical solver rarely solves the quadratic problem directly. It writes the second-order equation as a first-order system in the state \(z=[q;\dot q]\), whose matrix is \(2n\times2n\). The eigenvalues of that matrix are the same \(\lambda_m\), and its eigenvectors stack \(\phi_m\) on top of \(\lambda_m\phi_m\). The equivalence is derived in <a href="#state-proof">Appendix A</a>. The state form also justifies the exponential ansatz: the solution of \(\dot z=Az\) is a matrix exponential, and its eigenmodes are exponentials.</p>
+<p>Nonzero \(\phi\) makes \(Z(\lambda)\) singular; a zero determinant gives a null vector. The scale of \(\phi\) is arbitrary; only its direction matters. This is a quadratic eigenvalue problem. \(\det Z(s)\) has degree \(2n\) because its leading term is \(\det(M)s^{2n}\), so there are \(2n\) roots, and real matrices give conjugate pairs. A numerical solver uses the \(2n\times2n\) state form \(z=[q;\dot q]\), whose eigenvectors stack \(\phi_m\) on \(\lambda_m\phi_m\) (<a href="#state-proof">Appendix A</a>).</p>
 
 <h3 id="modes-real"><span class="sec-num">3.2</span>Real motion from complex modes</h3>
-<p>The auxiliary solution \(q_c(t)=\phi e^{\lambda t}\) is complex, but the physical displacement is real. Because the system matrices are real, if \(\lambda\) is an eigenvalue with eigenvector \(\phi\), then \(\bar\lambda\) is an eigenvalue with eigenvector \(\bar\phi\). A real solution is formed by combining the conjugate pair with conjugate coefficients. Let \(c\) be a complex constant set by the initial conditions, and let \(q_m(t)\) be the contribution of this pair:</p>
+<p>\(q_c\) is complex, but the physical \(q\) is real. Real matrices give \(\bar\lambda\) and \(\bar\phi\); combine the pair:</p>
 <div class="eq" id="eq-real-pair"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 3.3; scroll horizontally if needed">\[q_m(t)=c\,\phi e^{\lambda t}+\bar c\,\bar\phi e^{\bar\lambda t}=2\operatorname{Re}\!\left(c\,\phi e^{\lambda t}\right).\]</div><a class="number" href="#eq-real-pair">(3.3)</a></div>
-<p>The second equality is the identity \(z+\bar z=2\operatorname{Re}z\), applied entry by entry. The imaginary parts cancel in every coordinate, so each coordinate has a real displacement. Summing these contributions over the \(n\) conjugate pairs gives the physical free response; the \(2n\) real constants in the \(n\) complex coefficients \(c_m\) match the \(2n\) initial conditions on displacement and velocity.</p>
-<p>Write the eigenvalue in terms of its real and imaginary parts, \(\lambda=\sigma+j\omega_d\), and apply Euler’s formula:</p>
+<p>by \(z+\bar z=2\operatorname{Re}z\). Each coordinate is real, and the \(2n\) real constants in the \(n\) coefficients \(c_m\) match the initial conditions. Write \(\lambda=\sigma+j\omega_d\):</p>
 <div class="eq" id="eq-euler"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 3.4; scroll horizontally if needed">\[\lambda=\sigma+j\omega_d,\qquad e^{\lambda t}=e^{\sigma t}\left[\cos(\omega_d t)+j\sin(\omega_d t)\right].\]</div><a class="number" href="#eq-euler">(3.4)</a></div>
-<p>If \(\sigma&lt;0\), the envelope \(e^{\sigma t}\) decays. If \(\sigma&gt;0\), it grows; a stable structure has \(\sigma&lt;0\). A nonzero imaginary part produces oscillation. We choose the member of each conjugate pair with \(\omega_d&gt;0\) and write it as \(\lambda=-\alpha+j\omega_d\) with \(\alpha=-\sigma&gt;0\). The decay rate is \(\alpha\), in inverse seconds, and the damped angular frequency is \(\omega_d\), in radians per second.</p>
-<p>When the damping matrix is zero, or is a linear combination of \(M\) and \(K\), the mode shapes can be chosen real and the coordinates move in phase or exactly out of phase. For general \(C\), \(\phi\) is complex: different coordinates reach their maxima at different times. The physical motion is still real after the conjugate pair is combined. The complex shape is a compact way to record those relative phases, not a complex displacement.</p>
+<p>Stability means \(\sigma&lt;0\). Choose \(\omega_d&gt;0\) and write \(\lambda=-\alpha+j\omega_d\) with \(\alpha&gt;0\): \(\alpha\) is the decay rate, \(\omega_d\) the damped angular frequency. For \(C=0\) or proportional damping, \(\phi\) can be real; for general \(C\) it is complex and records relative phases, not a complex displacement.</p>
 
 <h3 id="modes-sdof"><span class="sec-num">3.3</span>The equivalent single-degree-of-freedom oscillator</h3>
-<p>We want to label each mode with a natural frequency and a damping ratio. Those labels come from a scalar oscillator, so first solve the scalar problem completely. Let a mass \(\mu&gt;0\), spring \(k&gt;0\), and damper \(b\ge0\) have displacement \(u(t)\). Set the force to zero in <a href="#eq-scalar-eom">(2.4)</a> and divide by \(\mu\):</p>
+<p>Natural frequency and damping ratio come from a scalar oscillator. With mass \(\mu&gt;0\), spring \(k&gt;0\), damper \(b\ge0\), set \(F=0\) in <a href="#eq-scalar-eom">(2.4)</a> and divide by \(\mu\):</p>
 <div class="eq" id="eq-sdof"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 3.5; scroll horizontally if needed">\[\ddot u+\frac{b}{\mu}\dot u+\frac{k}{\mu}u=0.\]</div><a class="number" href="#eq-sdof">(3.5)</a></div>
-<p>First remove the damper by setting \(b=0\). The equation becomes \(\ddot u+(k/\mu)u=0\). A cosine at angular frequency \(\omega_n\) has second derivative \(-\omega_n^2\) times itself, so the equation is satisfied when \(\omega_n^2=k/\mu\). This is the undamped natural angular frequency, set by mass and stiffness alone. Its value in cycles per second is \(f_n=\omega_n/(2\pi)\).</p>
-<p>Restore the damper and substitute \(u=e^{st}\). Cancelling the exponential gives the characteristic equation</p>
+<p>With \(b=0\), \(\ddot u+(k/\mu)u=0\), so \(\omega_n^2=k/\mu\) and \(f_n=\omega_n/(2\pi)\). Restoring the damper and substituting \(u=e^{st}\):</p>
 <div class="eq" id="eq-roots"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 3.6; scroll horizontally if needed">\[\mu s^2+bs+k=0,\qquad s=\frac{-b\pm\sqrt{b^2-4\mu k}}{2\mu}.\]</div><a class="number" href="#eq-roots">(3.6)</a></div>
-<p>The discriminant decides the type of motion. If \(b^2&lt;4\mu k\), the roots are a complex conjugate pair and the response oscillates. If \(b^2&gt;4\mu k\), both roots are real and negative, and the response is a sum of two decaying exponentials with no oscillation. At \(b^2=4\mu k\), the roots coincide; this is the boundary between the two behaviours. Call the boundary value the critical damping coefficient \(b_{\mathrm{crit}}\). Since \(b\ge0\),</p>
+<p>The discriminant decides: \(b^2&lt;4\mu k\) gives complex roots and oscillation, \(b^2&gt;4\mu k\) gives real negative roots and no oscillation, and equality gives a double root. The boundary is \(b_{\mathrm{crit}}=2\sqrt{\mu k}\), so</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Critical damping and damping ratio">\[b_{\mathrm{crit}}^2-4\mu k=0\quad\Longrightarrow\quad b_{\mathrm{crit}}=2\sqrt{\mu k},\qquad \zeta\equiv\frac{b}{b_{\mathrm{crit}}}=\frac{b}{2\sqrt{\mu k}}.\]</div>
-<p>The symbol \(\equiv\) introduces a definition. The damping ratio \(\zeta\) is the actual damping divided by the critical value; it is dimensionless. A value \(\zeta=0.05\) means five percent of critical damping. The regimes are \(0&lt;\zeta&lt;1\) underdamped, \(\zeta=1\) critically damped, and \(\zeta&gt;1\) overdamped. The factor of two in the denominator is not conventional decoration; it comes from the quadratic formula in <a href="#eq-roots">(3.6)</a>.</p>
-<p>Using \(\omega_n=\sqrt{k/\mu}\), the coefficient \(b/\mu\) becomes \(2\zeta\omega_n\). Dividing <a href="#eq-scalar-eom">(2.4)</a> by \(\mu\) therefore gives the conventional form and its characteristic polynomial:</p>
+<p>The dimensionless \(\zeta\) is \(&lt;1\) underdamped, \(=1\) critical, \(&gt;1\) overdamped; the factor 2 comes from <a href="#eq-roots">(3.6)</a>. Since \(b/\mu=2\zeta\omega_n\), dividing <a href="#eq-scalar-eom">(2.4)</a> by \(\mu\) gives</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Normalized oscillator and characteristic polynomial">\[\ddot u+2\zeta\omega_n\dot u+\omega_n^2u=0,\qquad s^2+2\zeta\omega_ns+\omega_n^2=0.\]</div>
-<p>For \(\zeta&lt;1\), the roots are \(s=-\zeta\omega_n\pm j\omega_n\sqrt{1-\zeta^2}\). Comparing with a damped mode \(\lambda=-\alpha\pm j\omega_d\), the real parts match when \(\alpha=\zeta\omega_n\), and the imaginary parts match when \(\omega_d=\omega_n\sqrt{1-\zeta^2}\).</p>
-<p>Now match the whole polynomial, not just the roots. The quadratic with roots \(\lambda=-\alpha+j\omega_d\) and \(\bar\lambda=-\alpha-j\omega_d\) and leading coefficient one is</p>
-<div class="equation-scroll" tabindex="0" role="region" aria-label="Factored characteristic polynomial of a damped mode">\[(s-\lambda)(s-\bar\lambda)=(s+\alpha-j\omega_d)(s+\alpha+j\omega_d)=(s+\alpha)^2+\omega_d^2=s^2+2\alpha s+(\alpha^2+\omega_d^2).\]</div>
-<p>Setting this equal to \(s^2+2\zeta_m\omega_{n,m}s+\omega_{n,m}^2\) and matching coefficients gives \(\zeta_m\omega_{n,m}=\alpha_m\) and \(\omega_{n,m}^2=\alpha_m^2+\omega_{d,m}^2\). Therefore</p>
+<p>For \(\zeta&lt;1\), \(s=-\zeta\omega_n\pm j\omega_n\sqrt{1-\zeta^2}\). Comparing with \(\lambda=-\alpha\pm j\omega_d\) gives \(\alpha=\zeta\omega_n\) and \(\omega_d=\omega_n\sqrt{1-\zeta^2}\). Matching the full polynomial,</p>
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Factored characteristic polynomial of a damped mode">\[(s-\lambda)(s-\bar\lambda)=(s+\alpha)^2+\omega_d^2=s^2+2\alpha s+(\alpha^2+\omega_d^2),\]</div>
+<p>so \(\zeta_m\omega_{n,m}=\alpha_m\), \(\omega_{n,m}^2=\alpha_m^2+\omega_{d,m}^2\), and</p>
 <div class="eq" id="eq-pole-params"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 3.7; scroll horizontally if needed">\[\omega_{n,m}=|\lambda_m|=\sqrt{\alpha_m^2+\omega_{d,m}^2},\qquad \zeta_m=\frac{\alpha_m}{\omega_{n,m}},\qquad \omega_{d,m}=\omega_{n,m}\sqrt{1-\zeta_m^2}.\]</div><a class="number" href="#eq-pole-params">(3.7)</a></div>
-<p>These are the modal parameters of mode \(m\). The decay rate \(\alpha_m\) says how fast its amplitude falls; the damped frequency \(\omega_{d,m}\) says how fast it oscillates; the damping ratio \(\zeta_m\) expresses the damping relative to critical. The natural frequency \(\omega_{n,m}\) is the modulus of the eigenvalue. It is the frequency the equivalent oscillator would have if its damping were removed while its modulus was held fixed, not necessarily the frequency obtained by removing damping from the whole structure. <a href="#modes-natural">§3.5</a> explains that distinction, which matters for interpreting reported frequencies.</p>
+<p>These are the modal parameters. \(\omega_{n,m}=|\lambda_m|\) is the equivalent-oscillator parameter, not necessarily an undamped structural frequency (<a href="#modes-natural">§3.5</a>).</p>
 
 <h3 id="modes-lab"><span class="sec-num">3.4</span>Interactive: damping regimes</h3>
-<p>The formulas above are easiest to read as a picture. Release the oscillator from unit displacement with zero initial velocity: \(u(0)=1\), \(\dot u(0)=0\). The damping control ranges from zero to twice critical. At and above critical damping the poles are real and the response no longer oscillates; increasing the damping further makes the final return to equilibrium slower, because the slow pole approaches zero.</p>
-<p>The plotted displacement solves the scalar oscillator with those initial conditions. For \(\zeta&lt;1\), write \(\alpha=\zeta\omega_n\) and \(\omega_d=\omega_n\sqrt{1-\zeta^2}\). The general underdamped solution is \(u=e^{-\alpha t}(C_1\cos\omega_dt+C_2\sin\omega_dt)\). The first initial condition gives \(C_1=1\). Differentiating, \(u(0)=-\alpha C_1+\omega_dC_2=0\), so \(C_2=\alpha/\omega_d\). For \(\zeta=1\), the general solution is \(u=(C_1+C_2t)e^{-\omega_nt}\); the same two conditions give \(C_1=1\) and \(C_2=\omega_n\). For \(\zeta&gt;1\), write \(\beta=\omega_n\sqrt{\zeta^2-1}\) and the real poles \(\lambda_1=-\alpha+\beta\), \(\lambda_2=-\alpha-\beta\). The solution is a sum of two exponentials; the two initial conditions give the coefficients below. In every case the displayed curve is the exact solution of the same equation with the same initial data:</p>
+<p>Release the oscillator from \(u(0)=1\), \(\dot u(0)=0\). For \(\zeta&lt;1\), \(u=e^{-\alpha t}(C_1\cos\omega_dt+C_2\sin\omega_dt)\); the conditions give \(C_1=1\) and \(C_2=\alpha/\omega_d\). For \(\zeta=1\), \(u=(C_1+C_2t)e^{-\omega_nt}\) gives \(C_1=1\), \(C_2=\omega_n\). For \(\zeta&gt;1\), \(\beta=\omega_n\sqrt{\zeta^2-1}\), \(\lambda_{1,2}=-\alpha\pm\beta\), and the two conditions give the coefficients below:</p>
 <div class="eq" id="eq-free-response"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 3.8; scroll horizontally if needed">\[u(t)=\begin{cases}e^{-\alpha t}\left[\cos(\omega_dt)+\dfrac{\alpha}{\omega_d}\sin(\omega_dt)\right],&0\le\zeta&lt;1,\\(1+\omega_nt)e^{-\omega_nt},&\zeta=1,\\\dfrac{-\lambda_2e^{\lambda_1t}+\lambda_1e^{\lambda_2t}}{\lambda_1-\lambda_2},&\zeta&gt;1.\end{cases}\]</div><a class="number" href="#eq-free-response">(3.8)</a></div>
-<p>The middle expression is the limit of the underdamped expression as the two roots merge; the overdamped expression reduces to it in the same limit. The figure shows the poles on the left and the displacement on the right. The pole-plane scale adjusts to keep both roots visible.</p>
+<p>The critical case is the limit of the underdamped case; the overdamped case reduces to it as \(\beta\to0\). The figure shows the poles and the response.</p>
 <figure class="lab" id="pole-lab">
 <div class="controls"><label for="pole-frequency">Natural frequency <output id="pole-frequency-value">2.0 Hz</output><input id="pole-frequency" type="range" min="1" max="4" step="0.1" value="2"></label><label for="pole-damping">Damping ratio <output id="pole-damping-value">4.0%</output><input id="pole-damping" type="range" min="0" max="200" step="0.5" value="4"></label></div>
 <div class="plot-window" tabindex="0" role="region" aria-label="Pole and decay plot; scroll horizontally on small screens"><svg id="pole-chart" viewBox="0 0 660 235" role="img" aria-label="Oscillator poles and free displacement across damping regimes"></svg></div><p class="readout" id="pole-readout" aria-live="polite"></p>
-<figcaption>The pole-plane scale adjusts to keep both roots visible. Below critical damping, they form a complex conjugate pair; at critical damping they coincide; above it, they separate along the negative real axis. The response always starts from the same displacement and zero velocity.</figcaption><noscript>Enable JavaScript to adjust this figure. Equation <a href="#eq-free-response">(3.8)</a> gives the same relationship without the controls.</noscript>
+<figcaption>The pole-plane scale keeps both roots visible. Below critical damping they form a conjugate pair; at critical damping they coincide; above it they separate along the negative real axis. The response starts from the same displacement and zero velocity.</figcaption><noscript>Enable JavaScript to adjust this figure. Equation <a href="#eq-free-response">(3.8)</a> gives the same relationship without the controls.</noscript>
 </figure>
 
 <h3 id="modes-natural"><span class="sec-num">3.5</span>Two meanings of natural frequency</h3>
-<p>There are two different operations that both deserve the name “remove the damping”. For the <em>equivalent scalar oscillator</em>, we set its damping ratio to zero while keeping its frequency parameter \(\omega_{n,m}=|\lambda_m|\). For the <em>whole structure</em>, we set \(C=0\) in <a href="#eq-eom">(2.7)</a> and solve a new eigenproblem. Let \(\Omega_r\) and \(\psi_r\) denote an undamped angular frequency and its displacement shape, with \(r\) indexing the undamped modes. Substituting a sinusoid into the undamped equations gives</p>
+<p>“Remove the damping” has two meanings. For the equivalent oscillator, set its \(\zeta\) to zero while keeping \(\omega_{n,m}=|\lambda_m|\). For the structure, set \(C=0\) in <a href="#eq-eom">(2.7)</a> and solve</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Undamped structural eigenproblem">\[M\ddot q+Kq=0,\qquad K\psi_r=\Omega_r^2M\psi_r.\]</div>
-<p>For a single mass and spring, the two calculations agree: both give \(\sqrt{k/\mu}\). They also agree mode by mode when the damping is proportional, meaning \(C=aM+bK\) for constants \(a,b\); then the damped modes are the undamped modes with an added decay. For general damping, the damped modes can combine several undamped shapes, and \(|\lambda_m|\) need not equal any \(\Omega_r\). In this page, “natural frequency of mode \(m\)” always means the equivalent-oscillator parameter \(\omega_{n,m}=|\lambda_m|\), computed from the damped eigenvalue. The undamped structural frequencies are a separate quantity. The distinction is derived in <a href="#state-proof">Appendix A</a>.</p>
-<p>The next part connects these free-vibration modes to a forced, measured response. The bridge is the transfer matrix, whose poles are exactly the eigenvalues found here.</p>
+<p>For one mass and spring both give \(\sqrt{k/\mu}\). Under proportional damping \(C=aM+bK\), the damped modes are the undamped modes with an added decay; <a href="#state-proof">Appendix A</a> shows \(\omega_{n,r}=\Omega_r\) and \(\zeta_r=(a/\Omega_r+b\Omega_r)/2\). For general damping, modes can mix undamped shapes and \(|\lambda_m|\) need not equal any \(\Omega_r\). Here \(\omega_{n,m}=|\lambda_m|\).</p>
+<p>The next part connects these modes to forced measurements through the transfer matrix.</p>
 </section>
 
 <div class="part-band"><span class="part-kicker">Part II</span><span class="part-name">From forces to spectra</span></div>
 
 <section id="transfer">
 <h2><span class="sec-num">4</span>The transfer matrix and its residues</h2>
-<p>Free vibration identifies the rates and shapes the structure can sustain. To connect them to a measured response, we need to know how a force at one point produces motion at another. That relation is the transfer matrix. Its partial-fraction expansion separates the contributions of the individual modes, and the numerator of each term carries the mode shape.</p>
+<p>Free vibration gives the poles; the transfer matrix gives their residues. It maps forces to measurements in the frequency domain.</p>
 
 <h3 id="laplace"><span class="sec-num">4.1</span>The Laplace transform</h3>
-<p>The Laplace transform turns a differential equation in time into an algebraic equation in a complex variable. For a signal \(q(t)\) defined for \(t\ge0\), define</p>
+<p>For a signal \(q(t)\) on \(t\ge0\),</p>
 <div class="eq" id="eq-laplace"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.1; scroll horizontally if needed">\[Q(s)=\mathcal L\{q\}(s)=\int_0^\infty q(t)e^{-st}\,dt,\qquad s=\sigma+j\omega.\]</div><a class="number" href="#eq-laplace">(4.1)</a></div>
-<p>This is a Fourier transform of the exponentially weighted signal \(q(t)e^{-\sigma t}\) on the positive time axis. Choosing \(\sigma\) large enough makes the integral converge for any signal that grows no faster than an exponential. The set of such \(\sigma\) is the region of convergence. We work inside it and do not need its exact boundary.</p>
-<p>The derivative rule follows from integration by parts. Let \(u=e^{-st}\) and \(dv=\dot q\,dt\), so \(du=-se^{-st}dt\) and \(v=q\):</p>
+<p>This is a Fourier transform of \(q(t)e^{-\sigma t}\); choosing \(\sigma\) large enough makes it converge. The derivative rule follows from integration by parts with \(u=e^{-st}\), \(dv=\dot q\,dt\):</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Integration by parts for the first derivative">\[\int_0^\infty\dot q(t)e^{-st}\,dt=\bigl[q(t)e^{-st}\bigr]_0^\infty+s\int_0^\infty q(t)e^{-st}\,dt=sQ(s)-q(0).\]</div>
-<p>At the upper limit, \(q(t)e^{-\sigma t}\to0\) by the choice of \(\sigma\); at the lower limit, the term is \(-q(0)\). Applying the same rule to \(\dot q\) gives the second derivative:</p>
+<p>The upper limit vanishes by the choice of \(\sigma\); the lower limit gives \(-q(0)\). Applying the rule again,</p>
 <div class="eq" id="eq-laplace-derivative"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.2; scroll horizontally if needed">\[\mathcal L\{\dot q\}(s)=sQ(s)-q(0),\qquad \mathcal L\{\ddot q\}(s)=s^2Q(s)-sq(0)-\dot q(0).\]</div><a class="number" href="#eq-laplace-derivative">(4.2)</a></div>
-<p>With zero initial displacement and velocity, each time derivative becomes multiplication by \(s\). We impose those initial conditions to isolate the response caused by the force; by linearity, the response to nonzero initial conditions can be added separately. The transfer matrix computed this way therefore describes the forced part of the response only, which is the part that matters for a structure in stationary operation.</p>
-<p>The Laplace variable is complex, but the measured stationary response is described by its value on the imaginary axis, \(s=j\omega=j2\pi f\). The region of convergence of a stable system includes that axis. The Laplace transform is used to derive the algebraic relation; the Fourier transform is used to interpret it at a frequency.</p>
+<p>With zero initial conditions each derivative is multiplication by \(s\); the initial-condition response can be added separately. On the imaginary axis, \(s=j\omega=j2\pi f\), this is the stationary frequency response.</p>
 
 <h3 id="transfer-h"><span class="sec-num">4.2</span>From the equation of motion to \(H(s)\)</h3>
-<p>Let \(X(s)\) and \(Y(s)\) be the Laplace transforms of the force vector \(x(t)\) and the measurement vector \(y(t)\), taken entry by entry. Apply the transform to <a href="#eq-eom">(2.7)</a> with zero initial conditions. Each term becomes algebraic:</p>
+<p>Transform <a href="#eq-eom">(2.7)</a> with zero initial conditions:</p>
 <div class="eq" id="eq-transform-eom"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.3; scroll horizontally if needed">\[\underbrace{(s^2M+sC+K)}_{Z(s)}Q(s)=BX(s),\qquad Y(s)=LQ(s).\]</div><a class="number" href="#eq-transform-eom">(4.3)</a></div>
-<p>The matrix \(Z(s)\) is the same dynamic stiffness that appeared in the free-vibration problem <a href="#eq-qep">(3.2)</a>. Where it is invertible, solve the first equation for \(Q\) and substitute into the second:</p>
-<div class="equation-scroll" tabindex="0" role="region" aria-label="Solving for the transformed displacement">\[Q(s)=Z(s)^{-1}BX(s),\qquad Y(s)=LZ(s)^{-1}BX(s).\]</div>
-<p>The matrix multiplying \(X(s)\) is the transfer matrix:</p>
+<p>Where \(Z(s)\) is invertible,</p>
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Solving for the transformed displacement">\[Q(s)=Z(s)^{-1}BX(s),\qquad Y(s)=LZ(s)^{-1}BX(s),\]</div>
+<p>so</p>
 <div class="eq" id="eq-transfer"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.4; scroll horizontally if needed">\[Y(s)=H(s)X(s),\qquad H(s)=LZ(s)^{-1}B.\]</div><a class="number" href="#eq-transfer">(4.4)</a></div>
-<p>The transfer matrix has size \(p\times r\). Its entry \(H_{ik}(s)\) maps input \(k\) to sensor \(i\). It is a matrix of rational functions of \(s\): the inverse \(Z(s)^{-1}\) has denominator \(\det Z(s)\), so every entry shares that denominator up to cancellation. The matrix \(Z(s)\) is singular exactly when \(s\) is an eigenvalue, so the poles of \(H\) are among the eigenvalues. A pole disappears from \(H\) only if the mode is unobservable at the sensors or unexcited by the inputs, or if a cancellation removes it from every entry. That possibility is examined after the residue is derived.</p>
+<p>\(H\) is \(p\times r\); \(H_{ik}\) maps input \(k\) to sensor \(i\). Its entries share the denominator \(\det Z(s)\). \(Z\) is singular exactly at the eigenvalues, so the poles of \(H\) are eigenvalues unless cancelled by \(L\) or \(B\).</p>
 
 <h3 id="transfer-pf"><span class="sec-num">4.3</span>Partial fractions at a simple pole</h3>
-<p>A rational function with simple poles can be written as a sum of one term per pole plus a remainder that is analytic at each pole. For one entry \(H_{ik}\), choose an eigenvalue \(\lambda_m\) and write</p>
-<div class="eq" id="eq-partial-fraction"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.5; scroll horizontally if needed">\[H_{ik}(s)=\frac{r_{ik,m}}{s-\lambda_m}+g_{ik,m}(s).\]</div><a class="number" href="#eq-partial-fraction">(4.5)</a></div>
-<p>where \(g_{ik,m}\) collects every other term and is finite at \(s=\lambda_m\). This is an exact identity of the two functions, not an approximation. The coefficient \(r_{ik,m}\) is called the residue of \(H_{ik}\) at \(\lambda_m\). To isolate it, multiply by \(s-\lambda_m\) and let \(s\to\lambda_m\):</p>
+<p>For one entry with a simple pole at \(\lambda_m\),</p>
+<div class="eq" id="eq-partial-fraction"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.5; scroll horizontally if needed">\[H_{ik}(s)=\frac{r_{ik,m}}{s-\lambda_m}+g_{ik,m}(s),\]</div><a class="number" href="#eq-partial-fraction">(4.5)</a></div>
+<p>where \(g_{ik,m}\) is finite at \(\lambda_m\). This is exact. Multiply by \(s-\lambda_m\) and take the limit:</p>
 <div class="eq" id="eq-residue-limit"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.6; scroll horizontally if needed">\[\lim_{s\to\lambda_m}(s-\lambda_m)H_{ik}(s)=\lim_{s\to\lambda_m}\left[r_{ik,m}+(s-\lambda_m)g_{ik,m}(s)\right]=r_{ik,m}.\]</div><a class="number" href="#eq-residue-limit">(4.6)</a></div>
-<p>The second term vanishes because a factor that goes to zero multiplies a function that stays finite. This is why the limit isolates the residue. Repeating the calculation for every sensor \(i\) and every input \(k\), and arranging the constants in their original positions, gives a constant matrix \(R_m\) and a remainder matrix \(H_{\mathrm{rest},m}\):</p>
+<p>The second term vanishes, so the limit isolates the residue. Entrywise this gives a matrix \(R_m\) and a remainder:</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Matrix residue separation">\[H(s)=\frac{R_m}{s-\lambda_m}+H_{\mathrm{rest},m}(s),\qquad R_m=\lim_{s\to\lambda_m}(s-\lambda_m)H(s).\]</div>
-<p>The matrix \(R_m\) has size \(p\times r\), with one coefficient for each sensor–input pair. It describes only the chosen pole. The remainder contains every other pole, including the conjugate pole \(\bar\lambda_m\). The assumption that the pole is simple, A5, is what makes the principal part a single term; a repeated pole would contribute terms with higher powers of \(1/(s-\lambda_m)\).</p>
+<p>\(R_m\) is \(p\times r\); \(H_{\mathrm{rest},m}\) contains the conjugate pole and all other modes. A simple pole (A5) makes the principal part one term.</p>
 
 <h3 id="transfer-residue"><span class="sec-num">4.4</span>Why the residue is rank one</h3>
-<p>The residue matrix is not an arbitrary matrix. To see its structure, separate the transfer matrix into the part that maps forces to all physical coordinates and the part that maps coordinates to sensors. Let</p>
+<p>Separate the force-to-coordinate transfer from the sensor map:</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Transfer from forces to coordinates">\[\mathcal T(s)=Z(s)^{-1}B,\qquad Q(s)=\mathcal T(s)X(s),\qquad H(s)=L\mathcal T(s).\]</div>
 <p>Let \(W_m\) be the residue of \(\mathcal T\) at \(\lambda_m\):</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Residue of the force-to-coordinate transfer">\[W_m=\lim_{s\to\lambda_m}(s-\lambda_m)\mathcal T(s).\]</div>
-<p>Multiply the identity \(Z(s)\mathcal T(s)=B\) by \(s-\lambda_m\) and take the limit. The left side becomes \(Z(\lambda_m)W_m\), because \(Z\) is continuous and the limit of the product is the product of the limits. The right side becomes zero, because \(s-\lambda_m\) multiplies the constant matrix \(B\):</p>
+<p>Multiply \(Z(s)\mathcal T(s)=B\) by \(s-\lambda_m\) and take the limit:</p>
 <div class="eq" id="eq-residue-null"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.7; scroll horizontally if needed">\[Z(\lambda_m)W_m=\lim_{s\to\lambda_m}(s-\lambda_m)B=0.\]</div><a class="number" href="#eq-residue-null">(4.7)</a></div>
-<p>This equation holds column by column. Each column of \(W_m\) is a vector that \(Z(\lambda_m)\) maps to zero, so each column lies in the nullspace of \(Z(\lambda_m)\), the set of vectors mapped to zero. At a simple eigenvalue, that nullspace has dimension one. Therefore every column is a scalar multiple of the single null vector \(\phi_m\). If the scalar for input \(k\) is \(\gamma_{m,k}\), then column \(k\) is \(\phi_m\gamma_{m,k}\). Stacking the columns gives</p>
+<p>Each column of \(W_m\) lies in the nullspace of \(Z(\lambda_m)\), the set of vectors mapped to zero. At a simple eigenvalue that nullspace is one-dimensional, so every column is a multiple of \(\phi_m\). If input \(k\) has scalar \(\gamma_{m,k}\),</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Physical residue is an outer product">\[W_m=\begin{bmatrix}\phi_m\gamma_{m,1}&\cdots&\phi_m\gamma_{m,r}\end{bmatrix}=\phi_m\gamma_m^T,\qquad \gamma_m^T=\begin{bmatrix}\gamma_{m,1}&\cdots&\gamma_{m,r}\end{bmatrix}.\]</div>
-<p>Now apply the sensor matrix. Because \(L\) is constant, it passes through the limit:</p>
+<p>Apply \(L\), which is constant and passes through the limit:</p>
 <div class="eq" id="eq-residue"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.8; scroll horizontally if needed">\[R_m=\lim_{s\to\lambda_m}(s-\lambda_m)H(s)=L\lim_{s\to\lambda_m}(s-\lambda_m)\mathcal T(s)=LW_m=(L\phi_m)\gamma_m^T=v_m\gamma_m^T.\]</div><a class="number" href="#eq-residue">(4.8)</a></div>
-<p>This is the central structural result. The residue is an outer product of two vectors: the measured shape \(v_m\), of length \(p\), and the input-coupling vector \(\gamma_m\), of length \(r\). It has rank one, meaning that every column of \(R_m\) is a multiple of the same measured shape. The multiplier changes from input to input, but the spatial pattern does not. If \(v_m=0\), the sensors do not see the mode; if \(\gamma_m=0\), no modeled input excites it. Either way the residue is zero and the pole is absent from \(H\).</p>
-<div class="callout">
-<p><strong>What rank one means here.</strong> For a fixed mode, every input produces the same sensor pattern, scaled by a complex number. Only the scalar \(\gamma_m^TX(s)\) changes with the input. The denominator \(s-\lambda_m\) divides every sensor equally, so it changes the frequency dependence but not the shape. This is why a single mode is visible as a single direction in a spectral matrix.</p>
-</div>
-<p>The input combination is worth writing explicitly. For two inputs with coupling coefficients \(2\) and \(-3\), and a measured shape \(v_m=[1,-2]^T\),</p>
+<p>The residue is rank one: every column is a multiple of the measured shape \(v_m\). If \(v_m=0\) the sensors do not see the mode; if \(\gamma_m=0\) the inputs do not excite it.</p>
+<p>For two inputs with coefficients \(2\) and \(-3\), and \(v_m=[1,-2]^T\),</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Two residue columns sharing one shape">\[R_m=\begin{bmatrix}2v_m&-3v_m\end{bmatrix}=\begin{bmatrix}2&-3\\-4&6\end{bmatrix}=\begin{bmatrix}1\\-2\end{bmatrix}\begin{bmatrix}2&-3\end{bmatrix}.\]</div>
-<p>Both columns retain the ratio \(1:-2\). Multiplying by an input vector combines them into \(v_m(2X_1-3X_2)\): one scalar excitation drives the whole pattern. The columns of the <em>full</em> transfer matrix need not be proportional, because the full matrix also contains the other modes. The rank-one statement is about one residue, not about \(H\) as a whole.</p>
+<p>Both columns keep the ratio \(1:-2\); an input vector combines them into \(v_m(2X_1-3X_2)\). The full \(H\) need not be rank one, because it contains the other modes. The rank-one statement is about one residue.</p>
 
 <h3 id="transfer-sum"><span class="sec-num">4.5</span>The full modal sum</h3>
-<p>For real system matrices, the residue at the conjugate pole is the conjugate of the residue at \(\lambda_m\). The reason is that the coefficients of the rational function \(H(s)\) are real: if \(H(s)\) has a pole at \(\lambda_m\) with residue \(R_m\), then \(H(\bar s)=\overline{H(s)}\) has a pole at \(\bar\lambda_m\) with residue \(\bar R_m\). Summing over the \(n\) conjugate pairs, choosing the member with positive imaginary part in each pair, reconstructs the transfer matrix exactly:</p>
+<p>For real matrices the conjugate pole has residue \(\bar R_m\). Summing the \(n\) pairs,</p>
 <div class="eq" id="eq-modal-sum"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 4.9; scroll horizontally if needed">\[H(s)=\sum_{m=1}^{n}\left(\frac{R_m}{s-\lambda_m}+\frac{\bar R_m}{s-\bar\lambda_m}\right),\qquad R_m=v_m\gamma_m^T.\]</div><a class="number" href="#eq-modal-sum">(4.9)</a></div>
-<p>This is a full partial-fraction expansion, not an assumption that one mode dominates. It is valid under A5, including heavy damping, as long as the poles are simple. It also shows where a mode can disappear: a zero measured shape, a zero input coupling, or a cancellation in a particular entry. A mode that is absent from \(H\) is not absent from the structure; it is absent from this input–output pair.</p>
-<p>Equation <a href="#eq-modal-sum">(4.9)</a> is the bridge to measured data. The next section describes the random response whose second moments are built from \(H\), and then isolates one term of the sum.</p>
+<p>This is exact under A5, not a one-mode assumption. A zero \(v_m\), zero \(\gamma_m\), or cancellation removes a term from \(H\); the mode still exists.</p>
 </section>
 
 <section id="spectra">
 <h2><span class="sec-num">5</span>The response spectral matrix</h2>
-<p>In an operational measurement the forces are unknown and fluctuate from record to record. We cannot average the response itself, because its mean is zero and its instantaneous value depends on the particular force history. We average products of Fourier coefficients instead. That average is the spectral matrix, and it is the quantity FDD decomposes.</p>
+<p>Operational forces are unknown and vary between records. We average products of Fourier coefficients, not the response itself; that average is the spectral matrix.</p>
 
 <h3 id="spectra-def"><span class="sec-num">5.1</span>From records to a spectral matrix</h3>
-<p>Let \(T\) be the duration of a record and let \(y(t)\) be the \(p\)-channel measurement on that record. Define its Fourier transform at frequency \(f\):</p>
+<p>Let \(T\) be the record duration and \(y(t)\) the \(p\)-channel measurement. Define</p>
 <div class="eq" id="eq-psd-def"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 5.1; scroll horizontally if needed">\[Y_T(f)=\int_{-T/2}^{T/2}y(t)e^{-j2\pi ft}\,dt,\qquad G_y(f)=\lim_{T\to\infty}\frac{1}{T}\mathbb E\!\left[Y_T(f)Y_T(f)^H\right].\]</div><a class="number" href="#eq-psd-def">(5.1)</a></div>
-<p>The vector \(Y_T(f)\) is random because the record is random. The expectation \(\mathbb E\) averages over all records that could have been generated under the same statistical conditions. The outer product \(Y_TY_T^H\) is a \(p\times p\) matrix; its \((i,k)\) entry is \(Y_i\bar Y_k\), the product of one channel with the conjugate of another. The factor \(1/T\) converts the squared transform, which has units of amplitude squared times time squared, into a density with units of amplitude squared per hertz. Integrating a diagonal entry over all frequencies gives that channel’s mean square, which equals its variance because the mean is zero.</p>
-<p>The spectral matrix is two-sided: both positive and negative frequencies are included. For real signals, the negative-frequency part is the conjugate mirror of the positive-frequency part, so no information is lost by keeping only nonnegative frequencies. A one-sided spectrum, marked \(^+\), doubles the interior positive-frequency bins and keeps the DC and Nyquist bins unchanged. The conventions are collected in <a href="#spectral-estimation">Appendix D</a>.</p>
-<p>The definition assumes that the expected product of two channels depends only on the time separation between the samples, not on the absolute time. That is wide-sense stationarity, A6. It guarantees that the limit in <a href="#eq-psd-def">(5.1)</a> exists and that the spectral matrix has a well-defined meaning. In practice the limit is replaced by an average over finite segments; ergodicity is the assumption that lets a time average estimate the ensemble average. The estimation details, including windowing and normalization, are in Appendix D.</p>
+<p>\(Y_T\) is random; \(\mathbb E\) averages over records. The \((i,k)\) entry of \(Y_TY_T^H\) is \(Y_i\bar Y_k\). The factor \(1/T\) converts squared transform (amplitude squared times time squared) to a density (amplitude squared per hertz). Integrating a diagonal entry over all frequencies gives that channel’s mean square, equal to its variance because the mean is zero.</p>
+<p>The matrix is two-sided. For real signals the negative frequencies mirror the positive ones; a one-sided spectrum, marked \(^+\), doubles interior positive bins and keeps DC and Nyquist unchanged. The definition assumes wide-sense stationarity (A6): expected products depend only on time separation, so the limit exists. Ergodicity lets a time average estimate the ensemble average; estimation details are in <a href="#spectral-estimation">Appendix D</a>.</p>
 
 <h3 id="spectra-psd"><span class="sec-num">5.2</span>Hermitian positive semidefiniteness</h3>
-<p>The outer product has a symmetry that survives averaging. For any vector \(Y\),</p>
+<p>For any \(Y\),</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Outer product is Hermitian">\[\left(YY^H\right)^H=\left(Y^H\right)^HY^H=YY^H.\]</div>
-<p>A matrix equal to its conjugate transpose is Hermitian. The expectation of a Hermitian matrix is Hermitian, so \(G_y\) is Hermitian. Its diagonal entries are real and nonnegative, because they are averages of \(|Y_i|^2\).</p>
-<p>The matrix is also positive semidefinite. Choose any complex vector \(a\) of sensor weights. The scalar \(a^HY_T\) is a weighted combination of the Fourier coefficients, and its squared magnitude cannot be negative. Averaging preserves the inequality:</p>
+<p>A matrix equal to its conjugate transpose is Hermitian; expectation preserves this, so \(G_y\) is Hermitian. Its diagonal entries are averages of \(|Y_i|^2\), hence real and nonnegative. For any complex weight vector \(a\), \(|a^HY_T|^2\ge0\), and averaging gives</p>
 <div class="eq" id="eq-psd-hermitian"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 5.2; scroll horizontally if needed">\[G_y^H=G_y,\qquad a^HG_ya=\lim_{T\to\infty}\frac{1}{T}\mathbb E\!\left[|a^HY_T|^2\right]\ge0.\]</div><a class="number" href="#eq-psd-hermitian">(5.2)</a></div>
-<p>These two properties are what FDD uses. The spectral theorem for Hermitian matrices says that \(G_y\) has an orthonormal basis of eigenvectors and real eigenvalues. Positive semidefiniteness says that those eigenvalues are nonnegative. Writing the eigenvectors as the columns of a unitary matrix \(U\) and the eigenvalues as the diagonal entries of a real diagonal matrix \(\Lambda\),</p>
+<p>So \(G_y\) is Hermitian positive semidefinite. The spectral theorem gives an orthonormal eigenbasis and real eigenvalues; positive semidefiniteness makes them nonnegative. With unitary \(U\) and diagonal \(\Lambda\),</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Eigendecomposition of the spectral matrix">\[G_y=U\Lambda U^H,\qquad U^HU=I,\qquad \Lambda=\operatorname{diag}(\lambda_1,\ldots,\lambda_p),\quad \lambda_k\ge0.\]</div>
-<p>For a positive-semidefinite Hermitian matrix, the singular values are the eigenvalues and the left singular vectors are the eigenvectors. The rank is the number of nonzero eigenvalues. A rank-one matrix has exactly one nonzero eigenvalue and one eigenvector; every other direction is in its nullspace.</p>
+<p>For such a matrix the singular values are the eigenvalues and the left singular vectors are the eigenvectors. The rank is the number of nonzero eigenvalues; a rank-one matrix has one eigenvector and a one-dimensional nullspace.</p>
 
 <h3 id="spectra-io"><span class="sec-num">5.3</span>The input–output relation</h3>
-<p>The measured spectral matrix describes the response. To connect it to the mechanical model, use the transfer matrix. At a fixed frequency, the Fourier transform of the stationary output is the transfer matrix evaluated on the imaginary axis times the Fourier transform of the input:</p>
+<p>At a fixed frequency, the stationary output transform is the transfer matrix on the imaginary axis times the input transform:</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Output Fourier transform">\[Y_T(f)=H(j2\pi f)X_T(f).\]</div>
-<p>This is the frequency-domain version of <a href="#eq-transfer">(4.4)</a>, with \(s=j2\pi f\). It holds for the forced part of the response under zero initial conditions; the initial-condition transient has decayed in stationary operation. Substitute into the outer product:</p>
+<p>This is <a href="#eq-transfer">(4.4)</a> at \(s=j2\pi f\), for the forced part after the transient has decayed. Substitute into the outer product:</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Output outer product in terms of the input">\[Y_TY_T^H=\left(HX_T\right)\left(HX_T\right)^H=HX_TX_T^HH^H.\]</div>
-<p>At a fixed frequency, \(H\) is a constant matrix determined by the system; it does not vary from one realization to the next. It can therefore be taken outside the expectation. Applying the definition <a href="#eq-psd-def">(5.1)</a> to both sides gives the exact relation</p>
+<p>At fixed frequency \(H\) is constant across realizations, so it passes through the expectation. Applying <a href="#eq-psd-def">(5.1)</a>,</p>
 <div class="eq" id="eq-psd-io"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 5.3; scroll horizontally if needed">\[G_y(f)=H(j2\pi f)\,G_x(f)\,H(j2\pi f)^H.\]</div><a class="number" href="#eq-psd-io">(5.3)</a></div>
-<p>The input spectral matrix \(G_x\) has size \(r\times r\) and is Hermitian positive semidefinite by the same argument as \(G_y\). The output matrix has size \(p\times p\). Equation <a href="#eq-psd-io">(5.3)</a> separates the two things that determine the measurement: the force spectrum \(G_x\), which describes how the structure is excited, and the transfer matrix \(H\), which describes how it responds and what the sensors see. The next section substitutes the modal expansion of \(H\) into this relation.</p>
+<p>\(G_x\) is \(r\times r\) and Hermitian positive semidefinite; \(G_y\) is \(p\times p\). The force spectrum describes the excitation, \(H\) the response and the sensors.</p>
 
 <h3 id="spectra-conventions"><span class="sec-num">5.4</span>Conventions and estimation</h3>
-<p>Two conventions are easy to mix up, so they are stated once here and derived in Appendix D. The first is the conjugation order of the cross-spectrum. This page defines entry \((i,k)\) as \(Y_i\bar Y_k\). Some software defines it as \(\bar Y_iY_k\), which is the transpose and conjugate of this matrix. The two conventions describe the same physics, but the estimated shape is conjugated in the second. They must not be mixed within one calculation.</p>
-<p>The second is the one-sided scaling. A one-sided spectral matrix keeps only \(f\ge0\) and doubles the interior bins, so that integrating it over \(f\ge0\) gives the same mean square as integrating the two-sided matrix over all \(f\). The DC and Nyquist bins are not doubled, because they have no negative-frequency partner. The Welch estimator that produces \(\widehat G_y\) from finite segments, its normalization, and the resolution–variance tradeoff are in Appendix D.</p>
-<p>With <a href="#eq-psd-io">(5.3)</a> and the modal sum <a href="#eq-modal-sum">(4.9)</a>, the response matrix is an exact sum of rank-one modal terms. The next part asks when one of those terms dominates strongly enough that the leading eigenvector of \(G_y\) can be read as a mode shape.</p>
+<p>This page defines entry \((i,k)\) as \(Y_i\bar Y_k\). Some software uses \(\bar Y_iY_k\), the transpose and conjugate; the estimated shape is then conjugated. Do not mix conventions. A one-sided spectrum keeps \(f\ge0\) and doubles interior bins so that integrating over \(f\ge0\) matches the two-sided mean square; DC and Nyquist are not doubled. The Welch estimator, its normalization, and the resolution–variance tradeoff are in <a href="#spectral-estimation">Appendix D</a>.</p>
 </section>
 
 <div class="part-band"><span class="part-kicker">Part III</span><span class="part-name">Finding modes in data</span></div>
 
 <section id="rankone">
 <h2><span class="sec-num">6</span>When one mode dominates</h2>
-<p>The response spectral matrix is an exact sum of rank-one modal terms, but the measured matrix contains all of them at once. FDD becomes possible when one term is large enough that the others can be treated as a perturbation. This section isolates one term, expands the matrix exactly around it, and states the condition under which the expansion is dominated by a single measured shape.</p>
+<p>The response matrix is an exact sum of rank-one terms. FDD uses the band where one term dominates and the others are a perturbation. This section isolates that term and bounds the remainder.</p>
 
 <h3 id="rankone-isolate"><span class="sec-num">6.1</span>Isolating one pole</h3>
-<p>Choose a mode \(m\) and evaluate the transfer matrix on the imaginary axis, \(s=j\omega\) with \(\omega=2\pi f\). Separate the term for \(\lambda_m\) from every other term:</p>
+<p>On the imaginary axis, \(s=j\omega\) with \(\omega=2\pi f\), separate mode \(m\):</p>
 <div class="eq" id="eq-rankone-split"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 6.1; scroll horizontally if needed">\[H(j\omega)=\frac{R_m}{j\omega-\lambda_m}+E_m(j\omega),\qquad R_m=v_m\gamma_m^T.\]</div><a class="number" href="#eq-rankone-split">(6.1)</a></div>
-<p>The matrix \(E_m\) contains the conjugate pole and every other mode. It is finite at \(\omega=\omega_{d,m}\), because the other poles are at different complex frequencies (A5). The selected denominator is</p>
-<div class="equation-scroll" tabindex="0" role="region" aria-label="Magnitude of the selected denominator">\[j\omega-\lambda_m=j\omega-(-\alpha_m+j\omega_{d,m})=\alpha_m+j(\omega-\omega_{d,m}),\qquad |j\omega-\lambda_m|^2=\alpha_m^2+(\omega-\omega_{d,m})^2.\]</div>
-<p>At \(\omega=\omega_{d,m}\), the denominator has magnitude \(\alpha_m\). The selected term therefore has magnitude proportional to \(1/\alpha_m\), which is large when the damping is small. The remainder \(E_m\) does not have that denominator and remains finite. This is the origin of the resonance peak: the numerator does not vanish, but the denominator becomes small.</p>
+<p>\(E_m\) contains the conjugate pole and every other mode and is finite at \(\omega_{d,m}\) (A5). The selected denominator is</p>
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Magnitude of the selected denominator">\[j\omega-\lambda_m=\alpha_m+j(\omega-\omega_{d,m}),\qquad |j\omega-\lambda_m|^2=\alpha_m^2+(\omega-\omega_{d,m})^2.\]</div>
+<p>At \(\omega=\omega_{d,m}\) its magnitude is \(\alpha_m\), so the selected term grows like \(1/\alpha_m\). The remainder has no such denominator.</p>
 
 <h3 id="rankone-expand"><span class="sec-num">6.2</span>The exact four-term expansion</h3>
-<p>Substitute <a href="#eq-rankone-split">(6.1)</a> into the input–output relation <a href="#eq-psd-io">(5.3)</a>. Write \(P=R_m/(j\omega-\lambda_m)\) for the selected term and \(E=E_m(j\omega)\) for the remainder. Then</p>
+<p>With \(P=R_m/(j\omega-\lambda_m)\) and \(E=E_m\), substitute into <a href="#eq-psd-io">(5.3)</a>:</p>
 <div class="eq" id="eq-rankone-expand"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 6.2; scroll horizontally if needed">\[G_y=(P+E)G_x(P+E)^H=PG_xP^H+PG_xE^H+EG_xP^H+EG_xE^H.\]</div><a class="number" href="#eq-rankone-expand">(6.2)</a></div>
-<p>This is exact. The first term contains the selected pole twice. The middle two terms mix the selected pole with the remainder, and the last term contains the remainder twice. Now evaluate the first term. Because \(P=R_m/(j\omega-\lambda_m)\) and \(P^H=R_m^H/(\overline{j\omega-\lambda_m})=R_m^H/(-j\omega-\bar\lambda_m)\), the denominator is \(|j\omega-\lambda_m|^2\):</p>
+<p>This is exact. The first term has the selected pole twice; the middle terms mix it with the remainder; the last has the remainder twice. Since \(P^H=R_m^H/(-j\omega-\bar\lambda_m)\),</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Selected term of the expansion">\[PG_xP^H=\frac{R_mG_xR_m^H}{|j\omega-\lambda_m|^2}.\]</div>
-<p>Substitute the factorization \(R_m=v_m\gamma_m^T\). Its conjugate transpose is \(R_m^H=\bar\gamma_mv_m^H\). Therefore</p>
+<p>With \(R_m^H=\bar\gamma_mv_m^H\),</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Numerator of the selected term">\[R_mG_xR_m^H=v_m\gamma_m^TG_x\bar\gamma_m\,v_m^H=\left(\gamma_m^TG_x\bar\gamma_m\right)v_mv_m^H.\]</div>
-<p>The scalar in parentheses multiplies the outer product. Define the scalar spectral weight</p>
+<p>Define the scalar weight</p>
 <div class="eq" id="eq-rankone-term"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 6.3; scroll horizontally if needed">\[G_y\approx d_m\,v_mv_m^H,\qquad d_m(f)=\frac{\gamma_m^TG_x(f)\bar\gamma_m}{\alpha_m^2+(2\pi f-\omega_{d,m})^2}\ge0.\]</div><a class="number" href="#eq-rankone-term">(6.3)</a></div>
-<p>The inequality holds because \(G_x\) is positive semidefinite. Since \((\bar\gamma_m)^H=\gamma_m^T\), the scalar is \(\gamma_m^TG_x\bar\gamma_m=(\bar\gamma_m)^HG_x(\bar\gamma_m)\), a quadratic form of a positive-semidefinite matrix, and cannot be negative. The frequency dependence is confined to the scalar \(d_m\). The direction \(v_m\) is fixed. If the force spectrum is approximately constant across the band, \(G_x\approx Q_x\), the weight becomes</p>
-<div class="equation-scroll" tabindex="0" role="region" aria-label="Weight under a constant force spectrum">\[d_m(f)=\frac{\gamma_m^TQ_x\bar\gamma_m}{\alpha_m^2+(2\pi f-\omega_{d,m})^2}.\]</div>
-<p>This is a Lorentzian in frequency: it peaks at the damped frequency \(\omega_{d,m}\) and has half-width proportional to \(\alpha_m\). The numerator sets its height; the damping sets its width.</p>
+<p>The numerator is \((\bar\gamma_m)^HG_x(\bar\gamma_m)\ge0\) because \(G_x\) is positive semidefinite. The direction \(v_m\) is fixed; only \(d_m\) varies with frequency. For constant \(G_x\approx Q_x\),</p>
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Weight under a constant force spectrum">\[d_m(f)=\frac{\gamma_m^TQ_x\bar\gamma_m}{\alpha_m^2+(2\pi f-\omega_{d,m})^2},\]</div>
+<p>a Lorentzian peaked at \(\omega_{d,m}\), with height set by the numerator and width by \(\alpha_m\).</p>
 
 <h3 id="rankone-bound"><span class="sec-num">6.3</span>The residual bound</h3>
-<p>The approximation in <a href="#eq-rankone-term">(6.3)</a> consists of dropping the last three terms of <a href="#eq-rankone-expand">(6.2)</a>. To say when that is legitimate, weight the selected term and the remainder by the excitation. Let \(G_x^{1/2}\) be the Hermitian positive-semidefinite square root of \(G_x\), and define</p>
+<p>Dropping the last three terms of <a href="#eq-rankone-expand">(6.2)</a> is legitimate when they are small. Weight selected term and remainder by the excitation; let \(G_x^{1/2}\) be the PSD square root and</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Excitation-weighted selected and residual terms">\[P_w=PG_x^{1/2},\qquad E_w=EG_x^{1/2}.\]</div>
-<p>Then \(P_wP_w^H=PG_xP^H\), \(P_wE_w^H=PG_xE^H\), \(E_wP_w^H=EG_xP^H\), and \(E_wE_w^H=EG_xE^H\). The expansion becomes</p>
+<p>Then \(P_wP_w^H=PG_xP^H\), \(P_wE_w^H=PG_xE^H\), \(E_wP_w^H=EG_xP^H\), \(E_wE_w^H=EG_xE^H\), so</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Four-term expansion in weighted form">\[G_y=P_wP_w^H+P_wE_w^H+E_wP_w^H+E_wE_w^H.\]</div>
-<p>Let \(\|\cdot\|_2\) denote the matrix spectral norm, the largest amplification of a unit vector. The triangle inequality and the product bound \(\|AB\|_2\le\|A\|_2\|B\|_2\) give</p>
+<p>With \(\|\cdot\|_2\) the spectral norm, the triangle inequality and \(\|AB\|_2\le\|A\|_2\|B\|_2\) give</p>
 <div class="eq" id="eq-residual-bound"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 6.4; scroll horizontally if needed">\[\left\|G_y-P_wP_w^H\right\|_2\le2\|P_w\|_2\|E_w\|_2+\|E_w\|_2^2.\]</div><a class="number" href="#eq-residual-bound">(6.4)</a></div>
-<p>If the weighted remainder is bounded by a fraction of the weighted selected term, \(\|E_w\|_2\le\varepsilon\|P_w\|_2\) with \(\varepsilon\ge0\), then</p>
+<p>If \(\|E_w\|_2\le\varepsilon\|P_w\|_2\), then</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Relative residual bound">\[\left\|G_y-P_wP_w^H\right\|_2\le(2\varepsilon+\varepsilon^2)\|P_w\|_2^2.\]</div>
-<p>The number \(\varepsilon\) is the relative size of the omitted response. It depends on the force spectrum, the modal visibility, and the separation of the poles, not on damping alone. A lightly damped mode can have a large \(\varepsilon\) if a nearby mode is strongly excited, and a heavily damped mode can have a small \(\varepsilon\) if it is the only mode in the band. The derivation of <a href="#eq-residual-bound">(6.4)</a> is repeated in <a href="#residual-proof">Appendix C</a> with the same notation, so the two can be read side by side.</p>
+<p>\(\varepsilon\) depends on the force spectrum, modal visibility, and pole separation, not on damping alone. A lightly damped mode can have large \(\varepsilon\) near a strongly excited mode; a heavily damped mode can have small \(\varepsilon\) if it is alone in the band. <a href="#residual-proof">Appendix C</a> repeats the bound.</p>
 
 <h3 id="rankone-meaning"><span class="sec-num">6.4</span>What the assumption really says</h3>
-<p>The condition is not “the structure has one mode.” It has many. It is not “the damping is small.” Small damping makes the selected term taller and narrower, which helps, but it does not guarantee that the remainder is small. The condition is local in frequency: in this band, the selected mode’s contribution dominates the response that is actually excited and actually observed.</p>
-<p>That distinction matters because a mode can be invisible for two different reasons. If \(v_m\) is small, the sensors are near a node of the mode and do not see it. If \(\gamma_m\) is small, the forces do not excite it. In either case the selected term is small even if the mode is lightly damped. Conversely, a strongly excited nearby mode can dominate a band even if the target mode is lightly damped. The bound <a href="#eq-residual-bound">(6.4)</a> contains both effects through \(P_w\) and \(E_w\).</p>
-<p>Three common failures follow. Close modes make \(E\) large, because the other pole is near the selected frequency. Colored forcing makes \(G_x\) vary across the band, so the weight is no longer a clean Lorentzian and the peak can shift. Correlated inputs change the scalar weight but do not by themselves destroy the rank-one structure of a single mode; they matter when several modes contribute. Measurement noise adds a full-rank term, which raises the smaller singular values and eventually destroys the numerical rank-one structure. These cases are revisited in <a href="#fdd-overlap">§7.4</a> and <a href="#practice">§9</a>.</p>
+<p>It does not say the structure has one mode, or that damping is small. It says that in this band the selected mode dominates the response that is actually excited and observed. A mode can be invisible because \(v_m\) is small (sensors near a node) or \(\gamma_m\) is small (forces do not excite it), even if it is lightly damped. Close modes make \(E\) large; colored forcing distorts the weight and can shift the peak; correlated inputs matter when several modes contribute; noise adds a full-rank term.</p>
 
 <h3 id="rankone-example"><span class="sec-num">6.5</span>Worked example: two sensors</h3>
-<p>The abstract factorization is easiest to see in the smallest case. Two sensors record a structure in which only one mode contributes. Suppose that whenever the first sensor moves \(1\) mm in its positive direction, the second moves \(2\) mm in its negative direction. Let \(a(t)\) be the first displacement and \(y(t)\) the column vector of both measurements. The fixed vector \(v\) records the relative motion:</p>
+<p>Suppose one mode moves sensor 1 by \(1\) mm and sensor 2 by \(-2\) mm. With \(a(t)\) the first displacement,</p>
 <div class="eq" id="eq-example-motion"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 6.5; scroll horizontally if needed">\[y(t)=\begin{bmatrix}a(t)\\-2a(t)\end{bmatrix}=v\,a(t),\qquad v=\begin{bmatrix}1\\-2\end{bmatrix}.\]</div><a class="number" href="#eq-example-motion">(6.5)</a></div>
-<p>The time dependence is entirely in \(a(t)\). It can be irregular; the spatial ratio remains \(1:-2\). In the frequency domain, let \(A(f)\) be the Fourier coefficient of \(a(t)\) over a record, and \(Y_1,Y_2\) the coefficients of the two sensors. Linearity gives \(Y_1=A\) and \(Y_2=-2A\). The products are</p>
+<p>Let \(A(f)\) be the Fourier coefficient of \(a\). Linearity gives \(Y_1=A\), \(Y_2=-2A\), so</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Products of the two sensor coefficients">\[|Y_1|^2=|A|^2,\qquad |Y_2|^2=4|A|^2,\qquad Y_1\bar Y_2=-2|A|^2.\]</div>
-<p>The separate power spectra preserve the amplitude ratio but lose the sign: squaring gives the same result for \(2A\) and \(-2A\). The cross product preserves their opposite motion. This is the concrete reason the cross-spectrum is retained. Averaging and normalizing gives the spectral matrix</p>
+<p>The separate power spectra lose the sign; the cross product preserves the opposite motion. Averaging and normalizing,</p>
 <div class="eq" id="eq-example-spectrum"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 6.6; scroll horizontally if needed">\[G_y(f)=S_a(f)\,vv^T=S_a(f)\begin{bmatrix}1&-2\\-2&4\end{bmatrix},\]</div><a class="number" href="#eq-example-spectrum">(6.6)</a></div>
-<p>where \(S_a(f)\) is the PSD of the first signal. Where \(S_a&gt;0\), the matrix has one independent column and rank one. Multiplication gives</p>
+<p>where \(S_a\) is the PSD of \(a\). For \(S_a&gt;0\) the matrix is rank one, and</p>
 <div class="eq" id="eq-example-eigenpair"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 6.7; scroll horizontally if needed">\[G_yv=5S_a(f)\,v,\qquad G_y\begin{bmatrix}2\\1\end{bmatrix}=0.\]</div><a class="number" href="#eq-example-eigenpair">(6.7)</a></div>
-<p>The eigenvalue depends on how strongly the motion is excited; the eigenvector gives the relative motion \(1:-2\) regardless of that strength. The null vector \([2,1]^T\) is orthogonal to \(v\), which is the one-dimensional nullspace of a rank-one Hermitian matrix. This is exactly the structure of <a href="#eq-rankone-term">(6.3)</a>: a scalar weight times an outer product, with the shape in the outer product.</p>
-<p>Two caveats follow from the example. First, the shape is defined only up to scale: \([1,-2]^T\), \([2,-4]^T\), and \([-1,2]^T\) all describe the same relative motion, with the last differing by a phase of \(180^\circ\). Second, where \(S_a=0\), the matrix is zero and has no preferred direction; the shape is not defined at frequencies where the mode is not excited. FDD therefore estimates the shape at peaks, where the mode is present, not at every frequency.</p>
+<p>The eigenvalue depends on excitation strength; the eigenvector gives \(1:-2\) regardless. The null vector \([2,1]^T\) is orthogonal to \(v\). The shape is defined only up to scale and phase, and where \(S_a=0\) there is no preferred direction. FDD therefore estimates shapes at peaks.</p>
 </section>
 
 <section id="fdd">
 <h2><span class="sec-num">7</span>Frequency domain decomposition</h2>
-<p>FDD turns the rank-one approximation into a calculation that can be applied to a measured spectral matrix at every frequency. The calculation is an eigendecomposition. The interpretation of its leading vector as a mode shape is the approximation; the decomposition itself is exact.</p>
+<p>FDD diagonalizes the measured spectral matrix at each frequency. The decomposition is exact; reading the leading vector as a mode shape uses the approximation of §6.</p>
 
 <h3 id="fdd-svd"><span class="sec-num">7.1</span>The SVD at each frequency</h3>
-<p>In practice \(G_y\) is replaced by an estimate \(\widehat G_y\) computed from finite records. The hat marks a quantity computed from data. At frequency \(f_i\), diagonalize the estimated Hermitian positive-semidefinite matrix:</p>
+<p>At frequency \(f_i\), diagonalize the estimate \(\widehat G_y\):</p>
 <div class="eq" id="eq-svd"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.1; scroll horizontally if needed">\[\widehat G_y(f_i)=U_iS_iU_i^H=\sum_{k=1}^{p}s_k(f_i)\,u_k(f_i)u_k(f_i)^H,\qquad s_1\ge s_2\ge\cdots\ge s_p\ge0.\]</div><a class="number" href="#eq-svd">(7.1)</a></div>
-<p>The columns of \(U_i\) are orthonormal eigenvectors, and \(S_i\) is diagonal with the eigenvalues on its diagonal. For a Hermitian positive-semidefinite matrix, the singular values are the eigenvalues and the left singular vectors are the eigenvectors; the singular value decomposition and the eigendecomposition coincide. The ordering \(s_1\ge s_2\ge\cdots\) is a convention; it makes the first term the largest.</p>
-<p>If the exact matrix were rank one, only \(s_1\) would be nonzero. The estimated matrix is generally full rank because of other modes, noise, and finite-record errors. The question is not whether \(s_2\) is exactly zero, but whether it is small enough that \(u_1\) is close to the physical shape. That is a perturbation question, addressed in <a href="#fdd-vector">§7.2</a> and <a href="#perturbation-proof">Appendix E</a>.</p>
+<p>The columns of \(U_i\) are orthonormal eigenvectors; \(S_i\) is diagonal. For a Hermitian positive-semidefinite matrix the SVD and eigendecomposition coincide: the singular values are the eigenvalues, and the left singular vectors are the eigenvectors. The ordering makes the first term largest.</p>
+<p>An exact rank-one matrix has only \(s_1\ne0\). The estimate is generally full rank because of other modes, noise, and finite-record errors. The question is whether \(s_2\) is small enough that \(u_1\) is close to the physical shape (<a href="#perturbation-proof">Appendix E</a>).</p>
 
 <h3 id="fdd-vector"><span class="sec-num">7.2</span>The leading singular vector</h3>
-<p>For the rank-one model \(G\approx d\,vv^H\) with \(v\ne0\), multiply by \(v\):</p>
-<div class="eq" id="eq-rankone-eigen"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.2; scroll horizontally if needed">\[\left(d\,vv^H\right)v=d\,\|v\|^2\,v.\]</div><a class="number" href="#eq-rankone-eigen">(7.2)</a></div>
-<p>Thus \(v\) is an eigenvector with eigenvalue \(d\|v\|^2\). Normalizing it gives the leading singular vector and value:</p>
+<p>For \(G\approx d\,vv^H\) with \(v\ne0\),</p>
+<div class="eq" id="eq-rankone-eigen"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.2; scroll horizontally if needed">\[\left(d\,vv^H\right)v=d\,\|v\|^2\,v,\]</div><a class="number" href="#eq-rankone-eigen">(7.2)</a></div>
+<p>so \(v\) is an eigenvector with eigenvalue \(d\|v\|^2\). Normalizing,</p>
 <div class="eq" id="eq-shape-estimate"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.3; scroll horizontally if needed">\[u_1\approx e^{j\theta}\frac{v}{\|v\|},\qquad s_1\approx d\,\|v\|^2.\]</div><a class="number" href="#eq-shape-estimate">(7.3)</a></div>
-<p>The phase \(e^{j\theta}\) is arbitrary: if \(v\) is an eigenvector, so is \(e^{j\theta}v\) for any real \(\theta\). The normalization \(\|u_1\|=1\) fixes the magnitude but not the phase. Neither the phase nor the overall scale carries physical meaning in output-only analysis. Multiplying \(v\) by a complex constant and adjusting \(d\) by the inverse squared magnitude leaves \(d\,vv^H\) unchanged. This is why modal mass is not identifiable from output-only data.</p>
-<p>For a perturbed matrix \(G=G_0+E\) with \(G_0=d\,vv^H\), the leading eigenvector is close to \(v/\|v\|\) when the perturbation is small relative to the gap between the first and second eigenvalues. The precise statement is a Davis–Kahan bound: if the leading eigenvalue is separated from the rest by a gap \(\delta\), then the sine of the angle between the estimated and true leading directions is at most \(\|E\|_2/\delta\). The derivation and the exact hypotheses are in <a href="#perturbation-proof">Appendix E</a>. The practical reading is that a large ratio \(s_1/s_2\) is evidence for a well-defined direction, and a ratio near one is evidence that the direction is not determined.</p>
-<p>For the two-sensor example, <a href="#eq-shape-estimate">(7.3)</a> gives \(u_1=[1,-2]^T/\sqrt5\) and \(s_1=5S_a(f)\). The normalization is conventional; the ratio \(1:-2\) is the physical content.</p>
+<p>The phase \(\theta\) is arbitrary, and multiplying \(v\) by a constant while adjusting \(d\) leaves \(d\,vv^H\) unchanged. Neither phase nor scale is physical; this is why modal mass is not identifiable. For \(G=G_0+E\) with \(G_0=d\,vv^H\), the leading vector is close to \(v/\|v\|\) when \(\|E\|_2\) is small relative to the spectral gap; the bound is in <a href="#perturbation-proof">Appendix E</a>. A large \(s_1/s_2\) supports a well-defined direction; a ratio near one does not. For the two-sensor example, \(u_1=[1,-2]^T/\sqrt5\) and \(s_1=5S_a\).</p>
 
 <h3 id="fdd-peak"><span class="sec-num">7.3</span>Peak frequency is not pole frequency</h3>
-<p>The peak of a measured spectrum is not exactly the damped frequency, and neither is exactly the undamped natural frequency. The distinction is visible even in a single-degree-of-freedom oscillator. With modal subscripts omitted, let \(h(j\omega)\) be the force-to-displacement transfer function with unit numerator,</p>
-<div class="equation-scroll" tabindex="0" role="region" aria-label="Scalar transfer function on the imaginary axis">\[h(j\omega)=\frac{1}{\omega_n^2-\omega^2+j2\zeta\omega_n\omega}.\]</div>
-<p>Its squared magnitude is</p>
+<p>Even a single oscillator distinguishes the spectral peak from \(\omega_n\) and \(\omega_d\). With subscripts omitted, the force-to-displacement transfer function is</p>
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Scalar transfer function on the imaginary axis">\[h(j\omega)=\frac{1}{\omega_n^2-\omega^2+j2\zeta\omega_n\omega},\]</div>
+<p>so</p>
 <div class="eq" id="eq-peak-magnitude"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.4; scroll horizontally if needed">\[\left|h(j\omega)\right|^2=\frac{1}{(\omega_n^2-\omega^2)^2+4\zeta^2\omega_n^2\omega^2}.\]</div><a class="number" href="#eq-peak-magnitude">(7.4)</a></div>
-<p>Under white forcing, the displacement PSD has the same frequency dependence up to a constant factor. Maximizing \(|h|^2\) is the same as minimizing the denominator \(D(\omega)=(\omega_n^2-\omega^2)^2+4\zeta^2\omega_n^2\omega^2\). Differentiate:</p>
+<p>Under white forcing the displacement PSD has the same frequency dependence. Minimize the denominator \(D(\omega)\):</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Derivative of the denominator">\[D'(\omega)=2(\omega_n^2-\omega^2)(-2\omega)+8\zeta^2\omega_n^2\omega=4\omega\left[\omega^2-\omega_n^2+2\zeta^2\omega_n^2\right].\]</div>
-<p>The stationary points are \(\omega=0\) and the roots of the bracket, \(\omega^2=\omega_n^2(1-2\zeta^2)\). The bracket is negative just above zero and positive for large \(\omega\) when \(\zeta&lt;1/\sqrt2\), so the positive root is a minimum of \(D\) and therefore a maximum of \(|h|^2\). When \(\zeta\ge1/\sqrt2\), the bracket is nonnegative for all \(\omega&gt;0\), so \(D\) is increasing and the maximum is at \(\omega=0\). Therefore</p>
+<p>The stationary points are \(\omega=0\) and \(\omega^2=\omega_n^2(1-2\zeta^2)\). For \(\zeta&lt;1/\sqrt2\) the positive root is a minimum of \(D\), hence a maximum of \(|h|^2\); for \(\zeta\ge1/\sqrt2\) the maximum is at \(\omega=0\). Therefore</p>
 <div class="eq" id="eq-peak"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.5; scroll horizontally if needed">\[\omega_{\mathrm{peak}}=\omega_n\sqrt{1-2\zeta^2}\quad(\zeta&lt;1/\sqrt2),\qquad \omega_{\mathrm{peak}}=0\quad(\zeta\ge1/\sqrt2).\]</div><a class="number" href="#eq-peak">(7.5)</a></div>
-<p>For light damping, \(\omega_{\mathrm{peak}}\), \(\omega_d=\omega_n\sqrt{1-\zeta^2}\), and \(\omega_n\) are close, which is why peak picking is a useful first approximation. They are not equal. For \(0&lt;\zeta&lt;1/\sqrt2\), the ordering is \(\omega_{\mathrm{peak}}&lt;\omega_d&lt;\omega_n\). Colored forcing, acceleration measurements, and finite spectral resolution can shift the observed maximum further. An acceleration PSD carries an extra factor \(\omega^4\) relative to displacement, so its peak is biased upward; this is one reason to state the measured quantity before reporting a frequency.</p>
+<p>For light damping the three frequencies are close; for \(0&lt;\zeta&lt;1/\sqrt2\), \(\omega_{\mathrm{peak}}&lt;\omega_d&lt;\omega_n\). Colored forcing, acceleration measurement, and finite resolution shift the observable peak; an acceleration PSD carries an extra \(\omega^4\), biasing it upward.</p>
 
 <h3 id="fdd-overlap"><span class="sec-num">7.4</span>Two modes in one band</h3>
-<p>When two modes contribute in the same band, the spectral matrix is a sum of two rank-one terms:</p>
+<p>For two modes,</p>
 <div class="eq" id="eq-two-mode"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.6; scroll horizontally if needed">\[G_y=d_1v_1v_1^H+d_2v_2v_2^H.\]</div><a class="number" href="#eq-two-mode">(7.6)</a></div>
-<p>If the measured shapes are orthonormal, \(v_1^Hv_2=0\), the eigenvectors are exactly \(v_1\) and \(v_2\), with eigenvalues \(d_1\|v_1\|^2\) and \(d_2\|v_2\|^2\). The larger eigenvalue identifies the stronger mode. If the shapes are not orthogonal, this simplification fails. Multiply by \(v_1\):</p>
-<div class="eq" id="eq-two-mode-mix"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.7; scroll horizontally if needed">\[G_yv_1=d_1\|v_1\|^2v_1+d_2v_2\left(v_2^Hv_1\right).\]</div><a class="number" href="#eq-two-mode-mix">(7.7)</a></div>
-<p>The second term generally points away from \(v_1\), so \(v_1\) is not an eigenvector unless \(v_2^Hv_1=0\) or \(d_2=0\). The leading singular vector is therefore a mixture, not a physical shape. What survives is the subspace: if \(d_1,d_2&gt;0\) and \(v_1,v_2\) are linearly independent, \(G_y\) maps every vector into the two-dimensional span of \(v_1,v_2\). Every eigenvector with a nonzero eigenvalue lies in that span. The first two singular vectors recover the span, but not the individual shapes. Recovering each shape requires more information, such as a physical model, additional references, or a separation in frequency.</p>
-<p>Orthogonal measured shapes are a special case, and they should not be confused with mass-orthogonal physical modes. A physical mode pair can satisfy \(\phi_1^HM\phi_2=0\) while the measured shapes satisfy \(v_1^Hv_2\ne0\); the sensor matrix \(L\) does not preserve the mass inner product. Equal singular values are a second special case: any orthonormal basis of the corresponding subspace is then an eigenbasis, so the decomposition does not determine a unique shape at all.</p>
-<p>The modal assurance criterion (MAC) measures agreement between two nonzero vectors:</p>
+<p>If \(v_1^Hv_2=0\), the eigenvectors are exactly \(v_1,v_2\), with eigenvalues \(d_1\|v_1\|^2,d_2\|v_2\|^2\). Otherwise</p>
+<div class="eq" id="eq-two-mode-mix"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.7; scroll horizontally if needed">\[G_yv_1=d_1\|v_1\|^2v_1+d_2v_2\left(v_2^Hv_1\right),\]</div><a class="number" href="#eq-two-mode-mix">(7.7)</a></div>
+<p>and the second term points away from \(v_1\), so \(v_1\) is not an eigenvector. The leading vector is a mixture. What survives is the span: if \(d_1,d_2&gt;0\) and \(v_1,v_2\) are independent, \(G_y\) maps into their two-dimensional span, and the first two singular vectors recover that span but not the individual shapes. Orthogonal measured shapes are special; they are not the same as mass-orthogonal physical modes, because \(L\) does not preserve the mass inner product. Equal singular values leave the basis within the subspace undetermined.</p>
+<p>The modal assurance criterion measures agreement:</p>
 <div class="eq" id="eq-mac"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 7.8; scroll horizontally if needed">\[\operatorname{MAC}(u,v)=\frac{|u^Hv|^2}{(u^Hu)(v^Hv)}\in[0,1].\]</div><a class="number" href="#eq-mac">(7.8)</a></div>
-<p>The Cauchy–Schwarz inequality bounds \(|u^Hv|\) by \(\|u\|\|v\|\), so the ratio lies between zero and one. It is one for proportional vectors and zero for orthogonal vectors, and a common complex scale has no effect. FDD uses MAC to decide whether the direction at a neighboring frequency is the same mode or a different one.</p>
+<p>By Cauchy–Schwarz it lies in \([0,1]\); it is one for proportional vectors, zero for orthogonal vectors, and invariant to a common complex scale. MAC decides whether the direction at a neighboring frequency is the same mode.</p>
 <figure class="lab" id="mix-lab">
 <h3>Two measured shapes</h3>
-<p>At a \(90^\circ\) shape angle, the two directions are orthogonal. Reduce the angle and the frequency separation to see how the estimated direction mixes the modes. The natural frequencies are \(f_{n,m}=\omega_{n,m}/(2\pi)\): mode 1 is fixed at 3 Hz, and the separation control sets mode 2. Both modes have damping ratio \(\zeta\). Independent white modal forces, with no sensor noise, produce <a href="#eq-two-mode">(7.6)</a> with weights</p>
+<p>At \(90^\circ\) the shapes are orthogonal; reduce the angle and the gap to mix them. Mode 1 is at 3 Hz, mode 2 at \(3+\text{gap}\), both with damping \(\zeta\); independent white forces give <a href="#eq-two-mode">(7.6)</a> with</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Two-mode spectral weights">\[d_m(f)=\left|\frac{1}{1-(f/f_{n,m})^2+j2\zeta(f/f_{n,m})}\right|^2.\]</div>
-<p>Let \(\beta\) be the angle between the unit measured shapes \(v_1=[1,0]^T\) and \(v_2=[\cos\beta,\sin\beta]^T\). The readout reports the singular-value ratio and the MAC of the leading vector with each physical shape. A MAC near one means the leading vector is close to that shape; a MAC near zero means it is nearly orthogonal. When the singular values are equal, the basis within the subspace is not unique, and no unique MAC is reported.</p>
+<p>With \(v_1=[1,0]^T\), \(v_2=[\cos\beta,\sin\beta]^T\), the readout gives \(s_1/s_2\) and the MAC with each physical shape. Equal singular values mean no unique MAC.</p>
 <div class="controls">
 <label for="mode-gap">Frequency separation <output id="mode-gap-value">0.80 Hz</output><input id="mode-gap" type="range" min="0" max="1.5" step="0.01" value="0.8"></label>
 <label for="mode-angle">Angle between measured shapes <output id="mode-angle-value">90°</output><input id="mode-angle" type="range" min="10" max="90" step="1" value="90"></label>
@@ -506,86 +471,88 @@
 <label for="probe">Inspect frequency <output id="probe-value">3.00 Hz</output><input id="probe" type="range" min="2.4" max="5" step="0.01" value="3"></label>
 </div><div class="legend"><span class="blue">— First singular value</span><span class="orange">– – Second singular value</span><span>Vertical line: inspected frequency</span></div>
 <div class="plot-window" tabindex="0" role="region" aria-label="Singular value plot; scroll horizontally on small screens"><svg id="mix-chart" viewBox="0 0 660 290" role="img" aria-label="First and second singular values of a synthetic two-channel response PSD"></svg></div><p class="readout" id="mix-readout" aria-live="polite"></p>
-<figcaption>Computed example, not measured data. The axis uses base-10 logarithmic spacing for the PSD singular values in arbitrary units. Both modal transfer functions have unit static gain, meaning that their value at zero frequency is one. The vertical line marks the frequency selected for the singular-value ratio and MAC readout.</figcaption>
-<noscript>Enable JavaScript to explore the spectrum. Equation <a href="#eq-two-mode">(7.6)</a> and the surrounding derivation explain why nonorthogonal shapes mix.</noscript>
+<figcaption>Computed example, not measured data. The axis is logarithmic in the PSD singular values, in arbitrary units. Both modal transfer functions have unit static gain. The vertical line marks the inspected frequency.</figcaption>
+<noscript>Enable JavaScript to explore the spectrum. Equation <a href="#eq-two-mode">(7.6)</a> explains why nonorthogonal shapes mix.</noscript>
 </figure>
 
 <h3 id="fdd-algorithm"><span class="sec-num">7.5</span>The algorithm</h3>
-<p>The derivation is now complete enough to state the procedure. The box is a summary, not a replacement for the assumptions above.</p>
 <div class="algorithm">
 <p class="algorithm-title">FDD, step by step</p>
 <ol>
-<li><strong>Acquire.</strong> Record \(p\) synchronized channels with known units and orientations. Choose a segment length, a window, and an overlap.</li>
-<li><strong>Estimate.</strong> Compute the cross-spectral matrix \(\widehat G_y(f_i)\) at each frequency bin, using the same segments and window for every channel pair. Use enough independent segments that the estimate is stable.</li>
-<li><strong>Decompose.</strong> At each \(f_i\), compute the eigendecomposition <a href="#eq-svd">(7.1)</a>. Store the singular values and the first few singular vectors.</li>
-<li><strong>Find peaks.</strong> Plot \(s_1(f)\). A local maximum is a candidate resonance.</li>
-<li><strong>Read the shape.</strong> At a peak, take \(u_1\) as the shape estimate. Check that \(s_1/s_2\) is large and that \(u_1\) is stable across neighboring bins by MAC.</li>
-<li><strong>Estimate damping, if needed.</strong> Select the spectral bell around the peak by MAC, transform it to a correlation, and fit its decay (§8).</li>
+<li><strong>Acquire.</strong> Record \(p\) synchronized channels with known units and orientations; choose segment length, window, and overlap.</li>
+<li><strong>Estimate.</strong> Compute \(\widehat G_y(f_i)\) for every bin, using the same segments and window for all channel pairs and enough independent segments.</li>
+<li><strong>Decompose.</strong> Diagonalize at each \(f_i\) <a href="#eq-svd">(7.1)</a>; store the singular values and leading vectors.</li>
+<li><strong>Find peaks.</strong> Plot \(s_1(f)\); a local maximum is a candidate resonance.</li>
+<li><strong>Read the shape.</strong> At a peak take \(u_1\); check that \(s_1/s_2\) is large and \(u_1\) is stable across bins by MAC.</li>
+<li><strong>Estimate damping.</strong> If needed, select the bell around the peak by MAC and fit its correlation decay (§8).</li>
 </ol>
-<p><strong>Output.</strong> Damped frequency \(f_{d,m}\), measured shape \(u_1\) up to scale and phase, and, with EFDD, damping ratio \(\zeta_m\).</p>
+<p><strong>Output.</strong> Damped frequency \(f_{d,m}\), shape \(u_1\) up to scale and phase, and, with EFDD, \(\zeta_m\).</p>
 </div>
-<p>The dominant cost is the eigendecomposition at each frequency, \(O(N_fp^3)\) for \(N_f\) bins and \(p\) channels. Since \(p\) is usually small compared with the number of time samples, this is inexpensive. The spectral estimate itself is dominated by the fast Fourier transforms over segments, \(O(N\log N)\) per segment. The expensive part of a real study is not the linear algebra; it is choosing the sensors and the spectral settings so that the assumptions hold.</p>
+<p>The eigendecomposition costs \(O(N_fp^3)\) for \(N_f\) bins and \(p\) channels, small when \(p\) is small. The spectral estimate costs \(O(N\log N)\) per segment. In practice the hard part is sensor placement and spectral settings, not the linear algebra.</p>
 </section>
 
 <section id="efdd">
 <h2><span class="sec-num">8</span>Estimating damping: EFDD</h2>
-<p>FDD recovers a shape and a frequency from the spatial structure of the spectrum. It does not, by itself, recover damping, because the peak location depends only weakly on damping and the peak height depends on the unknown force amplitude. Enhanced FDD uses a different part of the same information: the <em>width</em> of the spectral peak. It selects the part of the spectrum that belongs to one mode, transforms it back into a correlation, and fits the decay of that correlation.</p>
+<p>FDD gives shape and frequency. Damping comes from the <em>width</em> of the spectral peak: select the part belonging to one mode, inverse-transform it, and fit the decay of its correlation.</p>
 
 <h3 id="efdd-bell"><span class="sec-num">8.1</span>Selecting the spectral bell</h3>
-<p>Start at a frequency near the peak, where the leading singular vector is taken as a reference shape \(\hat v_m\). At each neighboring frequency, compare the candidate singular vector \(u_k(f)\) with the reference using the MAC of <a href="#eq-mac">(7.8)</a>. If the MAC is above a threshold, the bin belongs to the same mode and is kept; otherwise it is rejected. The selected set of bins is the <em>spectral bell</em>.</p>
-<p>The threshold is a practical choice, not a universal constant. A value of \(0.8\) is a common starting point. It should be high enough to exclude a neighboring mode and low enough to include the flanks of the peak, where the signal is weaker and the estimate noisier. The direction can move between the first and second singular vectors when the singular values cross, so the tracking must follow the direction by MAC, not the vector index. After selection, set every unselected bin to zero and inspect the bell: a bump on one side, or a bell that is not smooth, is evidence that another mode or a harmonic is contaminating the selection.</p>
-<p>The selected spectrum is one-sided. Denote it by \(b^+(f)\), with \(b^+[k]\) its value at frequency \(k\Delta f\). The superscript \(+\) marks the one-sided scaling described in <a href="#spectral-estimation">Appendix D</a>; the DC and Nyquist bins are not doubled, and the interior bins are.</p>
+<p>Take the leading vector near a peak as the reference \(\hat v_m\). At each neighboring frequency, compute \(\operatorname{MAC}(u_k(f),\hat v_m)\) and keep the bin if it exceeds a threshold; the kept set is the <em>spectral bell</em>. A threshold of \(0.8\) is a common starting point: high enough to reject a neighboring mode, low enough to keep the flanks. Track the direction by MAC, not by vector index, because the first and second singular vectors can cross. Zero the rejected bins and inspect the bell: an asymmetric or rough bell indicates contamination.</p>
+<p>The selected spectrum is one-sided, \(b^+(f)\), with \(b^+[k]\) at \(k\Delta f\). The \(^+\) scaling is defined in <a href="#spectral-estimation">Appendix D</a>: interior bins are doubled, DC and Nyquist are not.</p>
 
 <h3 id="efdd-correlation"><span class="sec-num">8.2</span>From the bell to a correlation decay</h3>
-<p>The inverse Fourier transform of a one-sided PSD is the autocorrelation of the corresponding response. This is the Wiener–Khinchin relation. For a real, even correlation, the inverse transform reduces to a cosine integral:</p>
+<p>By Wiener–Khinchin, the inverse transform of the PSD is the autocorrelation. For a real even correlation the result is a cosine integral:</p>
 <div class="eq" id="eq-correlation"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 8.1; scroll horizontally if needed">\[\mathcal R_m(\tau)=\int_0^\infty b^+(f)\cos(2\pi f\tau)\,df\approx\Delta f\sum_{k=0}^{N/2}b^+[k]\cos\!\left(\frac{2\pi k\ell}{N}\right),\qquad \tau=\frac{\ell}{f_s}.\]</div><a class="number" href="#eq-correlation">(8.1)</a></div>
-<p>Here \(f_s\) is the sampling rate, \(N\) is an even transform length, \(\Delta f=f_s/N\) is the frequency spacing, and \(\ell\) is the lag index. The cosine appears because the negative-frequency half of a real spectrum is the conjugate mirror of the positive-frequency half; combining the two halves turns the complex exponential into a cosine. The discrete sum is a Riemann approximation to the integral; its accuracy depends on the frequency spacing and on the one-sided scaling.</p>
-<p>For a single mode under the EFDD approximation, the correlation oscillates with a decaying envelope. Write the envelope as \(a_m(\tau)=A_0e^{-\alpha_m\tau}\), with \(A_0&gt;0\) the extrapolated initial amplitude, and the damped period as \(T_d=2\pi/\omega_{d,m}\). The correlation is proportional to \(a_m(\tau)\cos(\omega_{d,m}\tau)\). The proportionality constant does not affect the decay rate.</p>
+<p>Here \(f_s\) is the sampling rate, \(N\) an even transform length, \(\Delta f=f_s/N\), and \(\ell\) the lag index. The cosine comes from mirroring the negative frequencies. For a single mode, the correlation oscillates with envelope \(a_m(\tau)=A_0e^{-\alpha_m\tau}\), \(A_0&gt;0\), and period \(T_d=2\pi/\omega_{d,m}\):</p>
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Correlation envelope and damped period">\[\mathcal R_m(\tau)\propto a_m(\tau)\cos(\omega_{d,m}\tau),\qquad T_d=\frac{2\pi}{\omega_{d,m}}.\]</div>
 
 <h3 id="efdd-decrement"><span class="sec-num">8.3</span>From log decrement to damping ratio</h3>
-<p>Sample the envelope at two times separated by \(k\) full periods, \(\tau\) and \(\tau+kT_d\). The ratio of the envelopes is \(e^{-\alpha_mkT_d}\), so its logarithm is \(-\alpha_mkT_d\). The logarithmic decrement \(\delta\) is defined as the logarithm of the amplitude ratio per period:</p>
+<p>At two times separated by \(k\) periods, the envelope ratio is \(e^{-\alpha_mkT_d}\). Its logarithm per period is the logarithmic decrement:</p>
 <div class="eq" id="eq-decrement"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 8.2; scroll horizontally if needed">\[\delta=\frac{1}{k}\ln\frac{a_m(\tau)}{a_m(\tau+kT_d)}=\alpha_mT_d.\]</div><a class="number" href="#eq-decrement">(8.2)</a></div>
-<p>The exponential makes the ratio independent of the starting time \(\tau\); that is why any pair of corresponding peaks can be used. Substitute \(\alpha_m=\zeta_m\omega_{n,m}\) and \(T_d=2\pi/\omega_{d,m}=2\pi/(\omega_{n,m}\sqrt{1-\zeta_m^2})\). The natural frequency cancels:</p>
+<p>Substitute \(\alpha_m=\zeta_m\omega_{n,m}\) and \(T_d=2\pi/(\omega_{n,m}\sqrt{1-\zeta_m^2})\); the natural frequency cancels:</p>
 <div class="equation-scroll" tabindex="0" role="region" aria-label="Log decrement in terms of damping ratio">\[\delta=\frac{2\pi\zeta_m}{\sqrt{1-\zeta_m^2}}.\]</div>
-<p>Solve for \(\zeta_m\). Square both sides, multiply by \(1-\zeta_m^2\), and collect terms:</p>
-<div class="equation-scroll" tabindex="0" role="region" aria-label="Solving for the damping ratio">\[\delta^2(1-\zeta_m^2)=4\pi^2\zeta_m^2\quad\Longrightarrow\quad\zeta_m^2=\frac{\delta^2}{4\pi^2+\delta^2}\quad\Longrightarrow\quad\zeta_m=\frac{\delta}{\sqrt{4\pi^2+\delta^2}}.\]</div>
-<p>The positive root is taken because \(\zeta_m\ge0\). Once \(\zeta_m\) is known, the damped frequency gives the natural frequency:</p>
+<p>Square and solve for \(\zeta_m\):</p>
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Solving for the damping ratio">\[\delta^2(1-\zeta_m^2)=4\pi^2\zeta_m^2\quad\Longrightarrow\quad\zeta_m^2=\frac{\delta^2}{4\pi^2+\delta^2}\quad\Longrightarrow\quad\zeta_m=\frac{\delta}{\sqrt{4\pi^2+\delta^2}},\]</div>
+<p>taking the positive root. Then</p>
 <div class="eq" id="eq-damping-result"><div class="equation-scroll" tabindex="0" role="region" aria-label="Equation 8.3; scroll horizontally if needed">\[\zeta_m=\frac{\delta}{\sqrt{4\pi^2+\delta^2}},\qquad f_{n,m}=\frac{f_{d,m}}{\sqrt{1-\zeta_m^2}}.\]</div><a class="number" href="#eq-damping-result">(8.3)</a></div>
-<p>In practice, fitting several peaks is better than using one ratio. Taking the logarithm of the envelope at peak times \(\tau_j\) gives \(\ln a_m(\tau_j)=\ln A_0-\alpha_m\tau_j\), which is a straight line in \(\tau_j\). A least-squares fit gives the slope \(-\alpha_m\), and hence \(\delta=\alpha_mT_d\). Same-sign peaks are one full period apart; alternating extrema are half a period apart, and using them without the correct spacing doubles or halves the apparent decrement. The fit should exclude the initial part, where the bell selection may distort the envelope, and the late part, where noise dominates.</p>
+<p>Fit several peaks: \(\ln a_m(\tau_j)=\ln A_0-\alpha_m\tau_j\) is a line; its slope gives \(\alpha_m\). Same-sign peaks are one period apart, alternating extrema half a period. Exclude the initial distorted part and the late noisy part.</p>
 
 <h3 id="efdd-bias"><span class="sec-num">8.4</span>Practical bias</h3>
-<p>EFDD assumes that the bell contains one mode and that its correlation is a single decaying cosine. Several effects violate that assumption. A nearby mode produces beating, a slow modulation of the envelope that biases a single-exponential fit. Truncating the bell too narrowly removes part of the peak and biases the decay; truncating it too widely admits neighboring modes and noise. Spectral leakage, the spreading caused by a finite window, changes the shape of the bell and therefore the apparent decay. Nonstationary excitation changes the peak height during the record, which also distorts the envelope.</p>
-<p>The defence is repetition. Compute the damping with several reasonable bell widths and fitting intervals and check that the result is stable. Compare the FDD and EFDD frequencies; they should be consistent with <a href="#eq-pole-params">(3.7)</a>. If the estimate changes substantially with the truncation, the bell is not isolating one mode, and the estimate should not be reported as a single number without that caveat.</p>
+<p>A nearby mode produces beating and biases a single-exponential fit. A bell that is too narrow truncates the peak; one that is too wide admits neighbors and noise. Leakage changes the bell shape, and nonstationary excitation changes its height. Compute the damping for several bell widths and fitting intervals. If the result moves, the bell is not isolating one mode; compare the EFDD frequency with <a href="#eq-pole-params">(3.7)</a> before reporting it.</p>
 </section>
 
 <div class="part-band"><span class="part-kicker">Part IV</span><span class="part-name">Practice</span></div>
 
 <section id="practice">
 <h2><span class="sec-num">9</span>Using the method on measurements</h2>
-<p>The calculation is short: estimate the cross-spectral matrix, decompose it at every frequency, inspect the dominant vectors around candidate peaks, and, if damping is needed, select a bell and fit its decay. The interpretation depends on a series of checks. This section collects them in the order in which they matter.</p>
+<p>The calculation is short; the checks decide whether the result means anything.</p>
 
 <h3 id="practice-before"><span class="sec-num">9.1</span>Before the measurement</h3>
-<p><strong>Sensor placement.</strong> A sensor at a node of a mode records none of that mode. Place sensors where the modes of interest are expected to have large motion, and include enough sensors to distinguish the shapes you care about. The measured shape \(v_m=L\phi_m\) can only be as informative as \(L\) allows.</p>
-<p><strong>Units and directions.</strong> Record the physical quantity (displacement, velocity, or acceleration), its units, and the positive direction of every channel. Arbitrary rescaling of one channel changes the geometry seen by the SVD and therefore changes the estimated shape. If channels are reoriented, apply the rotation before the spectral estimate, not after.</p>
-<p><strong>Synchronization.</strong> All channels must share a time base. A constant time offset between channels adds a frequency-dependent phase shift, which corrupts the cross-spectra and the shape. Check synchronization with a common excitation or a known signal before the test.</p>
-<p><strong>Duration and stationarity.</strong> The excitation must be stationary over the record, or at least over each segment used in the estimate. A record that contains a transient, a gust, or a change in operating condition violates A6 and produces a spectrum that is an average of different states.</p>
+<ul>
+<li><strong>Sensor placement.</strong> A sensor at a node records none of that mode. Place sensors where the target modes are large, and use enough to distinguish the shapes; \(v_m=L\phi_m\) is limited by \(L\).</li>
+<li><strong>Units and directions.</strong> Record the measured quantity, units, and positive direction. Arbitrary rescaling changes the geometry seen by the SVD; apply rotations before the spectral estimate.</li>
+<li><strong>Synchronization.</strong> All channels need one time base. A constant offset adds a frequency-dependent phase shift and corrupts the cross-spectra.</li>
+<li><strong>Stationarity.</strong> The excitation must be stationary over the record or each segment; transients, gusts, and operating changes violate A6.</li>
+</ul>
 
 <h3 id="practice-spectral"><span class="sec-num">9.2</span>During spectral estimation</h3>
-<p><strong>Same segments and window.</strong> Every entry of \(\widehat G_y\) must be computed from the same segments and the same window. Using different segments for different channel pairs destroys the phase relationships that the cross-spectrum is meant to preserve.</p>
-<p><strong>Enough averages.</strong> A single segment gives a noisy estimate whose rank can be artificially low. Averaging over independent segments reduces the variance. Overlap increases the number of segments but does not make them independent; the effective number of averages is smaller than the raw count.</p>
-<p><strong>Resolution.</strong> The segment length sets the frequency resolution. Zero-padding gives a denser frequency grid but does not improve the resolution, which is set by the segment duration and the window. A peak that is narrower than the resolution cannot be separated from a nearby peak.</p>
-<p><strong>Check the estimate.</strong> Plot \(s_1(f)\) and \(s_1/s_2\). A stable, well-separated peak with a large ratio is a candidate mode. A peak that moves when the segment length or the number of averages changes is not yet a stable estimate.</p>
+<ul>
+<li><strong>Same segments and window.</strong> Use them for every entry of \(\widehat G_y\); otherwise the cross-channel phase is destroyed.</li>
+<li><strong>Enough averages.</strong> One segment gives a noisy estimate with artificially low rank. Overlap adds segments but not independent averages.</li>
+<li><strong>Resolution.</strong> Segment length sets resolution; zero-padding only densifies the grid. A peak narrower than the resolution cannot be separated from its neighbor.</li>
+<li><strong>Check stability.</strong> Plot \(s_1(f)\) and \(s_1/s_2\); a peak that moves with segment length or averaging is not stable.</li>
+</ul>
 
 <h3 id="practice-interpret"><span class="sec-num">9.3</span>Interpreting the decomposition</h3>
-<p><strong>Stable direction.</strong> Across the bins of a peak, the leading vector should be stable by MAC. A direction that rotates rapidly with frequency is a mixture of modes, not one shape.</p>
-<p><strong>Rank-one check.</strong> A large \(s_1/s_2\) supports the rank-one interpretation. A ratio near one means that the second direction is comparable to the first; the leading vector is then not determined by the data alone.</p>
-<p><strong>Harmonic excitation.</strong> A sinusoidal force also produces a narrow, rank-one peak. The decomposition alone cannot distinguish a resonance from a forced harmonic. Check whether the frequency is stable across operating conditions, whether it coincides with a known forcing frequency, and whether the shape is consistent with a structural mode.</p>
-<p><strong>Mode visibility.</strong> An absent peak does not prove an absent mode. The mode may be weakly excited, or invisible at the available sensors. The same factors that make a residue small, \(v_m=0\) or \(\gamma_m=0\), make a mode absent from the measurement.</p>
-<p><strong>Nonlinearity.</strong> A nonlinear structure can produce peaks at harmonics and at combination frequencies, and its shapes can depend on amplitude. FDD assumes linearity; a shape that changes with excitation level is evidence against that assumption.</p>
+<ul>
+<li><strong>Stable direction.</strong> The leading vector should be stable by MAC across the peak; rapid rotation means a mixture.</li>
+<li><strong>Rank one.</strong> A large \(s_1/s_2\) supports the interpretation; a ratio near one leaves the direction undetermined.</li>
+<li><strong>Harmonic forcing.</strong> A sinusoid also gives a narrow rank-one peak. Check whether the frequency matches a known forcing frequency and whether the shape is structural.</li>
+<li><strong>Visibility.</strong> An absent peak does not prove an absent mode; it may be weakly excited or invisible at the sensors.</li>
+<li><strong>Nonlinearity.</strong> Harmonics, combination frequencies, and amplitude-dependent shapes violate the linear model.</li>
+</ul>
 
 <h3 id="practice-report"><span class="sec-num">9.4</span>Reporting</h3>
-<p>A result is reproducible only if the choices that produced it are reported. At a minimum, state the sensor coordinates and directions, the measured quantity and its units, the shape normalization and phase convention, the cross-spectrum convention, the segment length, window, overlap, number of averages, and frequency resolution. For EFDD, also report the selected bell, the MAC threshold, and the fitted lag interval. Report the frequencies as damped frequencies \(f_d\), or state explicitly that they are natural frequencies \(f_n\), because the two differ by the factor \(\sqrt{1-\zeta^2}\).</p>
-<p>The method is reliable when its assumptions are checked, not when they are assumed. The derivation in this page is meant to make those assumptions visible: the energy that produces the equation of motion, the simple poles that produce the rank-one residues, the stationarity that produces the spectral relation, and the dominance of one term that produces a single shape. When a check fails, the correct response is to report the mixture or the bias, not to treat the leading singular vector as a mode shape because the algorithm returned one.</p>
+<p>Report sensor coordinates and directions, measured quantity and units, shape normalization and phase convention, cross-spectrum convention, segment length, window, overlap, number of averages, and resolution. For EFDD also report the bell, MAC threshold, and fitted interval. State whether reported frequencies are damped \(f_d\) or natural \(f_n\); they differ by \(\sqrt{1-\zeta^2}\). When a check fails, report the mixture or bias rather than presenting the leading vector as a mode shape.</p>
 </section>
 
 <section id="state-proof" class="appendix">
