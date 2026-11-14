@@ -72,7 +72,7 @@
 .toc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 32px; }
 .toc-group { min-width: 0; }
 .toc-part { margin: 0 0 2px; font-family: var(--font-head); font-weight: 700; }
-.toc-list { margin: 0; padding-left: 22px; }
+.toc-list { list-style: none; margin: 0; padding: 0; }
 .toc-list li { margin: 2px 0; }
 .toc-list a { text-decoration: none; }
 .toc-list a:hover { text-decoration: underline; }
